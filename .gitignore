@@ -1,0 +1,20 @@
+# Do not upload raw/source data
+data/*.csv
+data/*.xlsx
+data/*.xls
+data/*.parquet
+data/*.pkl
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db

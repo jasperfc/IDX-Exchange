@@ -1,0 +1,157 @@
+Parameter | Type | Short Description | 中文說明
+
+BuyerAgentAOR | Enum/String | Buyer's agent Association of REALTORS (AOR) or board affiliation | 買方仲介所屬的房地產協會或地區組織。
+
+ListAgentAOR | Enum/String | Listing agent Association of REALTORS (AOR) or board affiliation | 掛牌仲介所屬的房地產協會或地區組織。
+
+Flooring | Enum | Flooring materials or floor covering types in the property | 房屋使用的地板材質，例如木地板、磁磚、地毯等。
+
+ViewYN | Boolean | Indicates whether the property has a view | 標記房屋是否有景觀，例如城市景、山景或海景。
+
+WaterfrontYN | Boolean | Indicates whether the property is located on a waterfront | 標記房屋是否位於水岸旁，例如湖邊、河邊或海邊。
+
+BasementYN | Boolean | Indicates whether the property includes a basement | 標記房屋是否有地下室。
+
+PoolPrivateYN | Boolean | Indicates whether the property has a private pool | 標記房屋是否有私人泳池。
+
+OriginalListPrice | Decimal | Original asking price when the property was first listed for sale (USD) | 房屋第一次上市時的開價，單位為美元。
+
+ListingKey | String | Unique system identifier for the listing record | MLS 系統中用來唯一識別該筆掛牌資料的代碼。(Primary Key)
+
+ListAgentEmail | String | Email address of the listing agent | 掛牌仲介的電子郵件，屬於聯絡資訊。
+
+CloseDate | DateTime | Date when the sale or lease transaction was closed | 交易正式完成的日期。
+
+ClosePrice | Decimal | Final amount paid by the buyer at closing (USD) | 房屋最終成交價格，單位為美元。(Target)
+
+ListAgentFirstName | String | First name of the listing agent | 掛牌仲介的名字。
+
+ListAgentLastName | String | Last name of the listing agent | 掛牌仲介的姓氏。
+
+Latitude | Decimal | Geographic latitude of the property in decimal degrees | 房屋所在位置的緯度座標，(十進位度數)。
+
+Longitude | Decimal | Geographic longitude of the property in decimal degrees | 房屋所在位置的經度座標，(十進位度數)。
+
+UnparsedAddress | String | Full property address as a single text field | 房屋完整地址，未拆分成街道、城市、州等欄位。
+
+PropertyType | Enum | General property category such as Residential or ResidentialLease | 房產的大分類，例如住宅、住宅租賃、商業或土地。
+
+LivingArea | Decimal | Total livable area within the structure | 房屋可居住的室內面積，通常以平方英尺表示。
+
+ListPrice | Decimal | Current or final listing price set by the seller and broker (USD) | 賣方與仲介設定的掛牌價格，單位為美元。
+
+DaysOnMarket | Int32 | Number of days the listing was on the market | 房屋從上市到狀態改變或成交前，在市場上停留的天數。
+
+ListOfficeName | String | Legal name of the brokerage representing the seller | 代表賣方的房仲公司名稱。
+
+BuyerOfficeName | String | Legal name of the brokerage representing the buyer | 代表買方的房仲公司名稱。
+
+CoListOfficeName | String | Legal name of the brokerage co-representing the seller | 共同代表賣方的房仲公司名稱。
+
+ListAgentFullName | String | Full name of the listing agent | 掛牌仲介的完整姓名。
+
+CoListAgentFirstName | String | First name of the co-listing agent | 共同掛牌仲介的名字。
+
+CoListAgentLastName | String | Last name of the co-listing agent | 共同掛牌仲介的姓氏。
+
+BuyerAgentMlsId | String | MLS identifier of the buyer's agent | 買方仲介在 MLS 系統中的識別碼。
+
+BuyerAgentFirstName | String | First name of the buyer's agent | 買方仲介的名字。
+
+BuyerAgentLastName | String | Last name of the buyer's agent | 買方仲介的姓氏。
+
+FireplacesTotal | Int32 | Total number of fireplaces in the property | 房屋內壁爐的總數量。
+
+AssociationFeeFrequency | Enum | Frequency of the homeowners association fee | HOA 管理費的繳費頻率，例如每月、每年或一次性。
+
+AboveGradeFinishedArea | Decimal | Finished area at or above ground level | 位於地面層以上且已完工的室內面積。
+
+ListingKeyNumeric | Int64 | Numeric version of the listing key | ListingKey 的數字版本，用於系統識別。
+
+MLSAreaMajor | String | Major MLS-defined marketing area | MLS 系統定義的主要市場或地理區域。
+
+TaxAnnualAmount | Decimal | Annual property tax amount from the latest assessment (USD) | 最新稅務評估中的年度房產稅金額，單位為美元。
+
+CountyOrParish | String | County or regional authority where the property is located | 房屋所在的郡或地方行政區。
+
+MlsStatus | Enum | Local MLS status of the listing | 該筆掛牌在 MLS 中的狀態，例如已成交、待成交或取消。
+
+ElementarySchool | String | Elementary school associated with the property | 房屋所屬學區對應的小學名稱。
+
+AttachedGarageYN | Boolean | Indicates whether the garage is attached to the main dwelling | 標記車庫是否與主建築相連。
+
+ParkingTotal | Decimal | Total number of parking spaces included | 房屋包含的總停車位數。
+
+BuilderName | String | Name of the builder or builder's tract | 建商名稱或建案開發區名稱。
+
+PropertySubType | Enum | Specific property subtype such as SingleFamilyResidence or Condominium | 房產細分類型，例如獨棟住宅、公寓、聯排別墅等。
+
+LotSizeAcres | Decimal | Total lot size in acres | 土地面積，以英畝表示。
+
+SubdivisionName | String | Subdivision, neighborhood, community, or builder tract name | 房屋所在的社區、分區、鄰里或建案名稱。
+
+BuyerOfficeAOR | Enum/String | Buyer's office Association of REALTORS (AOR) or board affiliation | 買方房仲公司所屬的房地產協會或地區組織。
+
+YearBuilt | Int32 | Year the structure was originally built | 房屋最初建造的年份。
+
+StreetNumberNumeric | Int32 | Numeric portion of the street number | 門牌號碼中的數字部分。
+
+ListingId | String | MLS listing identifier used to retrieve the listing | MLS 掛牌編號，通常用於查詢該筆房源。
+
+BathroomsTotalInteger | Int32 | Simple total count of bathrooms | 浴室總數，以整數方式記錄。
+
+City | String | City in the listing address | 房屋所在城市。
+
+TaxYear | Int32 | Year of the latest property tax assessment | 最近一次房產稅評估所屬年份。
+
+BuildingAreaTotal | Decimal | Total structure area including finished and unfinished areas | 建築物總面積，包含已完工與未完工空間。
+
+BedroomsTotal | Int32 | Total number of bedrooms in the dwelling | 房屋內臥室的總數量。
+
+ContractStatusChangeDate | DateTime | Date when the listing contract status changed | 掛牌合約狀態發生變更的日期。
+
+ElementarySchoolDistrict | String | Elementary school district associated with the property | 房屋所屬的小學學區。
+
+CoBuyerAgentFirstName | String | First name of the co-buyer's agent | 共同買方仲介的名字。
+
+PurchaseContractDate | DateTime | Date when an offer was accepted or purchase contract was formed | 買方出價被接受或購買合約成立的日期。
+
+ListingContractDate | DateTime | Effective date of the listing agreement | 賣方與掛牌仲介合約開始生效的日期。
+
+BelowGradeFinishedArea | Decimal | Finished area within the structure that is below ground | 位於地面以下且已完工的空間面積，例如地下室。
+
+BusinessType | Enum | Type of business associated with the property, if applicable | 若房產與商業用途相關，此欄記錄其商業類型。
+
+StateOrProvince | Enum/String | State or province postal abbreviation | 房屋所在州或省的郵政縮寫。
+
+CoveredSpaces | Decimal | Total number of covered garage and carport spaces | 有遮蔽的停車位數量，包含車庫與車棚。
+
+MiddleOrJuniorSchool | String | Middle or junior school associated with the property | 房屋所屬學區對應的國中或初中名稱。
+
+FireplaceYN | Boolean | Indicates whether the property includes a fireplace | 標記房屋是否有壁爐。
+
+Stories | Int32 | Number of floors in the property | 房屋樓層數。
+
+HighSchool | String | High school associated with the property | 房屋所屬學區對應的高中名稱。
+
+Levels | Enum | Number or configuration of levels in the property | 房屋樓層配置，例如單層、雙層或多層。
+
+LotSizeDimensions | String | Lot dimensions such as length and width | 土地尺寸描述，例如長寬或地界形狀。
+
+LotSizeArea | Decimal | Total lot area; unit depends on lot size units | 土地總面積，實際單位需搭配資料中的面積單位判斷。
+
+MainLevelBedrooms | Int32 | Number of bedrooms on the main or entry level | 主樓層或入口樓層的臥室數量。
+
+NewConstructionYN | Boolean | Indicates whether the property is newly constructed | 標記房屋是否為新建案或尚未被居住過。
+
+GarageSpaces | Decimal | Number of garage spaces | 車庫可停放車輛的數量。
+
+HighSchoolDistrict | String | High school district associated with the property | 房屋所屬的高中學區。
+
+PostalCode | String | ZIP or postal code of the property | 房屋所在地的郵遞區號。
+
+AssociationFee | Decimal | Homeowners association fee amount (USD) | HOA 管理費金額，單位為美元。
+
+LotSizeSquareFeet | Decimal | Total lot size in square feet (sq ft) | 土地總面積，以平方英尺表示。
+
+MiddleOrJuniorSchoolDistrict | String | Middle or junior school district associated with the property | 房屋所屬的國中或初中學區。
