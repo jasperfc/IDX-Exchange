@@ -4,6 +4,7 @@ data/*.xlsx
 data/*.xls
 data/*.parquet
 data/*.pkl
+data/*.pdf
 
 # Python
 __pycache__/
