@@ -1,0 +1,157 @@
+Parameter | Type | Short Description
+
+BuyerAgentAOR | Enum/String | Buyer's agent Association of REALTORS (AOR) or board affiliation
+
+ListAgentAOR | Enum/String | Listing agent Association of REALTORS (AOR) or board affiliation
+
+Flooring | Enum | Flooring materials or floor covering types in the property
+
+ViewYN | Boolean | Indicates whether the property has a view
+
+WaterfrontYN | Boolean | Indicates whether the property is located on a waterfront
+
+BasementYN | Boolean | Indicates whether the property includes a basement
+
+PoolPrivateYN | Boolean | Indicates whether the property has a private pool
+
+OriginalListPrice | Decimal | Original asking price when the property was first listed for sale (USD)
+
+ListingKey | String | Unique system identifier for the listing record (Primary Key)
+
+ListAgentEmail | String | Email address of the listing agent
+
+CloseDate | DateTime | Date when the sale or lease transaction was closed
+
+ClosePrice | Decimal | Final amount paid by the buyer at closing (USD) (Target)
+
+ListAgentFirstName | String | First name of the listing agent
+
+ListAgentLastName | String | Last name of the listing agent
+
+Latitude | Decimal | Geographic latitude of the property in decimal degrees
+
+Longitude | Decimal | Geographic longitude of the property in decimal degrees
+
+UnparsedAddress | String | Full property address as a single text field
+
+PropertyType | Enum | General property category such as Residential or ResidentialLease
+
+LivingArea | Decimal | Total livable area within the structure
+
+ListPrice | Decimal | Current or final listing price set by the seller and broker (USD)
+
+DaysOnMarket | Int32 | Number of days the listing was on the market
+
+ListOfficeName | String | Legal name of the brokerage representing the seller
+
+BuyerOfficeName | String | Legal name of the brokerage representing the buyer
+
+CoListOfficeName | String | Legal name of the brokerage co-representing the seller
+
+ListAgentFullName | String | Full name of the listing agent
+
+CoListAgentFirstName | String | First name of the co-listing agent
+
+CoListAgentLastName | String | Last name of the co-listing agent
+
+BuyerAgentMlsId | String | MLS identifier of the buyer's agent
+
+BuyerAgentFirstName | String | First name of the buyer's agent
+
+BuyerAgentLastName | String | Last name of the buyer's agent
+
+FireplacesTotal | Int32 | Total number of fireplaces in the property
+
+AssociationFeeFrequency | Enum | Frequency of the homeowners association fee
+
+AboveGradeFinishedArea | Decimal | Finished area at or above ground level
+
+ListingKeyNumeric | Int64 | Numeric version of the listing key
+
+MLSAreaMajor | String | Major MLS-defined marketing area
+
+TaxAnnualAmount | Decimal | Annual property tax amount from the latest assessment (USD)
+
+CountyOrParish | String | County or regional authority where the property is located
+
+MlsStatus | Enum | Local MLS status of the listing
+
+ElementarySchool | String | Elementary school associated with the property
+
+AttachedGarageYN | Boolean | Indicates whether the garage is attached to the main dwelling
+
+ParkingTotal | Decimal | Total number of parking spaces included
+
+BuilderName | String | Name of the builder or builder's tract
+
+PropertySubType | Enum | Specific property subtype such as SingleFamilyResidence or Condominium
+
+LotSizeAcres | Decimal | Total lot size in acres
+
+SubdivisionName | String | Subdivision, neighborhood, community, or builder tract name
+
+BuyerOfficeAOR | Enum/String | Buyer's office Association of REALTORS (AOR) or board affiliation
+
+YearBuilt | Int32 | Year the structure was originally built
+
+StreetNumberNumeric | Int32 | Numeric portion of the street number
+
+ListingId | String | MLS listing identifier used to retrieve the listing
+
+BathroomsTotalInteger | Int32 | Simple total count of bathrooms
+
+City | String | City in the listing address
+
+TaxYear | Int32 | Year of the latest property tax assessment
+
+BuildingAreaTotal | Decimal | Total structure area including finished and unfinished areas
+
+BedroomsTotal | Int32 | Total number of bedrooms in the dwelling
+
+ContractStatusChangeDate | DateTime | Date when the listing contract status changed
+
+ElementarySchoolDistrict | String | Elementary school district associated with the property
+
+CoBuyerAgentFirstName | String | First name of the co-buyer's agent
+
+PurchaseContractDate | DateTime | Date when an offer was accepted or purchase contract was formed
+
+ListingContractDate | DateTime | Effective date of the listing agreement
+
+BelowGradeFinishedArea | Decimal | Finished area within the structure that is below ground
+
+BusinessType | Enum | Type of business associated with the property, if applicable
+
+StateOrProvince | Enum/String | State or province postal abbreviation
+
+CoveredSpaces | Decimal | Total number of covered garage and carport spaces
+
+MiddleOrJuniorSchool | String | Middle or junior school associated with the property
+
+FireplaceYN | Boolean | Indicates whether the property includes a fireplace
+
+Stories | Int32 | Number of floors in the property
+
+HighSchool | String | High school associated with the property
+
+Levels | Enum | Number or configuration of levels in the property
+
+LotSizeDimensions | String | Lot dimensions such as length and width
+
+LotSizeArea | Decimal | Total lot area; unit depends on lot size units
+
+MainLevelBedrooms | Int32 | Number of bedrooms on the main or entry level
+
+NewConstructionYN | Boolean | Indicates whether the property is newly constructed
+
+GarageSpaces | Decimal | Number of garage spaces
+
+HighSchoolDistrict | String | High school district associated with the property
+
+PostalCode | String | ZIP or postal code of the property
+
+AssociationFee | Decimal | Homeowners association fee amount (USD)
+
+LotSizeSquareFeet | Decimal | Total lot size in square feet (sq ft)
+
+MiddleOrJuniorSchoolDistrict | String | Middle or junior school district associated with the property
