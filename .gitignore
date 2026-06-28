@@ -1,10 +1,11 @@
-# Do not upload raw/source data
-data/*.csv
-data/*.xlsx
-data/*.xls
-data/*.parquet
-data/*.pkl
-data/*.pdf
+# Raw data
+Data/raw/
+
+# Metadata
+Data/*.pdf
+
+# Full processed data (local only)
+Data/cleaned_full/
 
 # Python
 __pycache__/
