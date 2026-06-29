@@ -1,106 +1,229 @@
-# IDX-Exchange: Real Estate Price Prediction
+# 🏠 IDX Exchange - California Home Price Prediction
 
-## Project Overview
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
+![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
+![Status](https://img.shields.io/badge/Status-Week%203-yellow)
+![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
-This project is part of the IDX Exchange Data Science Internship. The goal is to develop a machine learning pipeline for predicting residential property sale prices using the CRMLS real estate dataset.
+Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
 
 ---
 
-## Project Structure
+# 📖 Project Overview
+
+This project is part of the **IDX Exchange Data Science Internship**.
+
+The objective is to build an end-to-end machine learning pipeline that predicts residential property sale prices based on property characteristics and transaction information from the California Regional Multiple Listing Service (CRMLS).
+
+Current work focuses on:
+
+- Exploratory Data Analysis (EDA)
+- Data preprocessing
+- Feature preparation
+- Building a baseline prediction model
+
+---
+
+# 📂 Repository Structure
 
 ```text
 project/
 │
 ├── data/
 │   ├── raw/                  # Raw source data (excluded from GitHub)
-│   ├── cleaned/              # Sample processed datasets (included in GitHub)
+│   ├── cleaned/              # Sample processed datasets
 │   └── cleaned_full/         # Full processed datasets (local only)
 │
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_data_preprocessing.ipynb
-│   └── ......
+│   └── 03_linear_regression.ipynb
 │
 ├── README.md
+├── requirements.txt
 └── .gitignore
 ```
 
 ---
 
-## Project Workflow
+# 🔄 Project Workflow
 
 ```text
-Raw Data
-    ↓
-Data Filtering
-    ↓
+Raw CRMLS Dataset
+        │
+        ▼
+Residential Property Filtering
+        │
+        ▼
+Data Cleaning
+        │
+        ▼
 Data Type Conversion
-    ↓
+        │
+        ▼
 Missing Value Handling
-    ↓
+        │
+        ▼
 Outlier Removal
-    ↓
+        │
+        ▼
 Train/Test Split
-    ↓
+        │
+        ▼
 One-Hot Encoding
-    ↓
-Export Processed Datasets
-    ↓
-Linear Regression (Week 4)
+        │
+        ▼
+Feature Selection
+        │
+        ▼
+Model Development
+        │
+        ▼
+Model Evaluation
 ```
 
 ---
 
-## Notebook Overview
+# 📈 Project Progress
 
-### Notebook 1 – Data Exploration
-
-* Loaded and explored the CRMLS real estate dataset.
-* Reviewed data types, missing values, and data quality.
-* Performed exploratory data analysis (EDA) with descriptive statistics and visualizations.
-* Examined relationships between housing characteristics and sale prices.
-
-### Notebook 2 – Data Preprocessing
-
-* Filtered residential single-family properties.
-* Converted features to appropriate data types.
-* Handled missing values and removed outliers.
-* Split the dataset into training and testing sets.
-* Applied One-Hot Encoding to selected categorical features.
-* Exported cleaned datasets for model development.
+| Week | Task | Status |
+|------|------|:------:|
+| Week 2 | Exploratory Data Analysis | ✅ |
+| Week 3 | Data Preprocessing | ✅ |
+| Week 4 | Linear Regression Baseline | ⏳ |
+| Week 5 | Model Evaluation & Improvement | ⏳ |
+| Week 6+ | Advanced Models & Optimization | ⏳ |
 
 ---
 
-## Processed Datasets
+# 📓 Notebook Overview
 
-The preprocessing notebook generates two versions of the processed datasets:
+## 01 - Data Exploration
 
-### Sample datasets (`data/cleaned/`)
+Performed exploratory data analysis on the CRMLS dataset.
 
-These datasets are included in this repository for demonstration purposes.
+### Tasks Completed
 
-* `cleaned_crmls.csv`
-* `train_clean.csv`
-* `test_clean.csv`
-* `train_encoded.csv`
-* `test_encoded.csv`
-
-### Full datasets (`data/cleaned_full/`)
-
-The preprocessing notebook also generates the complete processed datasets locally. These files are excluded from GitHub because they exceed GitHub's 100 MB file size limit and are used for model training and evaluation in subsequent notebooks.
+- Imported and explored the dataset
+- Examined data types
+- Reviewed missing values
+- Generated descriptive statistics
+- Visualized feature distributions
+- Investigated relationships between housing characteristics and sale price
 
 ---
 
-## Requirements
+## 02 - Data Preprocessing
 
-* Python 3.x
-* pandas
-* numpy
-* matplotlib
-* seaborn
-* scikit-learn
+Prepared the dataset for machine learning.
 
-Install dependencies:
+### Tasks Completed
+
+- Filtered residential single-family properties
+- Converted columns to appropriate data types
+- Handled missing values
+- Removed unrealistic observations and outliers
+- Split the dataset into training and testing sets
+- Applied One-Hot Encoding to categorical variables
+- Exported processed datasets
+
+---
+
+## 03 - Linear Regression *(Week 4)*
+
+Planned tasks include:
+
+- Feature selection
+- Baseline Linear Regression
+- Model evaluation
+- Residual analysis
+- Performance comparison
+
+---
+
+# 🎯 Prediction Target
+
+The prediction target is:
+
+```text
+ClosePrice
+```
+
+The following pricing variables will be excluded during model training to prevent target leakage:
+
+- `ListPrice`
+- `OriginalListPrice`
+
+---
+
+# 💾 Processed Datasets
+
+The preprocessing notebook exports **two versions** of the processed datasets.
+
+## Sample Datasets
+
+Location:
+
+```text
+data/cleaned/
+```
+
+These lightweight datasets are included in the repository for demonstration purposes.
+
+Generated files:
+
+- cleaned_crmls.csv
+- train_clean.csv
+- test_clean.csv
+- train_encoded.csv
+- test_encoded.csv
+
+---
+
+## Full Datasets
+
+Location:
+
+```text
+data/cleaned_full/
+```
+
+These datasets contain the complete processed CRMLS records.
+
+The files are generated locally and excluded from GitHub because they exceed GitHub's file size limit.
+
+These datasets will be used for all model training and evaluation in subsequent notebooks.
+
+---
+
+# 🛠️ Technologies
+
+- Python
+- pandas
+- NumPy
+- matplotlib
+- seaborn
+- scikit-learn
+- Jupyter Notebook
+
+---
+
+# ⚙️ Installation
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+or
 
 ```bash
 pip install pandas numpy matplotlib seaborn scikit-learn
@@ -108,20 +231,37 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 
 ---
 
-## Repository Notes
+# 📌 Repository Notes
 
-* Raw source data is excluded from this repository.
-* Metadata PDF files are not included.
-* Sample processed datasets are provided in `data/cleaned/`.
-* Full processed datasets are generated locally in `data/cleaned_full/` and are used for model development.
-The notebooks can be executed to regenerate the complete processed datasets locally.
+- Raw CRMLS source data is excluded from GitHub.
+- Metadata PDF files are excluded.
+- Sample processed datasets are included for demonstration.
+- Full processed datasets are generated locally.
+- Running the preprocessing notebook will regenerate the complete processed datasets.
 
 ---
 
-## Future Work
+# 🚀 Future Work
 
-- Feature Scaling
-- Linear Regression
-- Model Evaluation (RMSE, MAE, R²)
-- Feature Engineering
-- Model Comparison and Optimization
+- ✅ Data Exploration
+- ✅ Data Preprocessing
+- ⏳ Feature Scaling
+- ⏳ Linear Regression
+- ⏳ Model Evaluation (RMSE, MAE, MAPE, R²)
+- ⏳ Feature Engineering
+- ⏳ Decision Tree
+- ⏳ Random Forest
+- ⏳ XGBoost
+- ⏳ Hyperparameter Tuning
+- ⏳ Model Comparison
+
+---
+
+# 👤 Author
+
+**Jasper Fan-Chiang**
+
+M.S. in Applied Data Science  
+University of Southern California
+
+IDX Exchange — Data Science Internship
