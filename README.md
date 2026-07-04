@@ -36,9 +36,9 @@ project/
 │   └── cleaned_full/         # Full processed datasets (local only)
 │
 ├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_data_preprocessing.ipynb
-│   └── 03_linear_regression.ipynb
+│   ├── notebook_01_data_exploration.ipynb
+│   ├── notebook_02_data_preprocessing.ipynb
+│   └── notebook_03_baseline_model.ipynb
 │
 ├── README.md
 ├── requirements.txt
@@ -130,15 +130,20 @@ Prepared the dataset for machine learning.
 
 ---
 
-## 03 - Linear Regression *(Week 4)*
+## 03 - Baseline Model *(Week 4)*
 
-Planned tasks include:
+Established the first baseline model for close price prediction.
 
-- Feature selection
-- Baseline Linear Regression
-- Model evaluation
-- Residual analysis
-- Performance comparison
+### Tasks Completed
+
+- Loaded cleaned and encoded datasets from the preprocessing stage
+- Defined `ClosePrice` as the target variable
+- Separated features and target variables for training and testing
+- Summarized the target variable distribution
+- Trained a baseline Linear Regression model
+- Generated predictions on the test set
+- Evaluated model performance using R², MAE, and RMSE
+- Recorded baseline results for future model comparison
 
 ---
 
@@ -245,8 +250,7 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 
 - ✅ Data Exploration
 - ✅ Data Preprocessing
-- ⏳ Feature Scaling
-- ⏳ Linear Regression
+- ✅ Linear Regression
 - ⏳ Model Evaluation (RMSE, MAE, MAPE, R²)
 - ⏳ Feature Engineering
 - ⏳ Decision Tree
