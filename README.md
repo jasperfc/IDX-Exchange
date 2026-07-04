@@ -91,7 +91,7 @@ Model Evaluation
 |------|------|:------:|
 | Week 2 | Exploratory Data Analysis | ✅ |
 | Week 3 | Data Preprocessing | ✅ |
-| Week 4 | Linear Regression Baseline | ⏳ |
+| Week 4 | Linear Regression Baseline | ✅ |
 | Week 5 | Model Evaluation & Improvement | ⏳ |
 | Week 6+ | Advanced Models & Optimization | ⏳ |
 
@@ -130,7 +130,7 @@ Prepared the dataset for machine learning.
 
 ---
 
-## 03 - Baseline Model *(Week 4)*
+## 03 - Baseline Model
 
 Established the first baseline model for close price prediction.
 
