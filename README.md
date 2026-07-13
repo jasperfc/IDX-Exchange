@@ -39,6 +39,7 @@ project/
 │   ├── notebook_01_data_exploration.ipynb
 │   ├── notebook_02_data_preprocessing.ipynb
 │   └── notebook_03_baseline_model.ipynb
+│   └── notebook_04_model_comparison.ipynb
 │
 ├── README.md
 ├── requirements.txt
@@ -92,7 +93,8 @@ Model Evaluation
 | Week 2 | Exploratory Data Analysis | ✅ |
 | Week 3 | Data Preprocessing | ✅ |
 | Week 4 | Linear Regression Baseline | ✅ |
-| Week 5 | Model Evaluation & Improvement | ⏳ |
+| Week 5 | Decision Tree and Random Forest regressors | ⏳ |
+| Week 6 | Feature Engineering | ⏳ |
 | Week 6+ | Advanced Models & Optimization | ⏳ |
 
 ---
@@ -144,6 +146,14 @@ Established the first baseline model for close price prediction.
 - Generated predictions on the test set
 - Evaluated model performance using R², MAE, and RMSE
 - Recorded baseline results for future model comparison
+
+---
+
+## 04 - Additional Models (Decision Tree and Random Forest)
+
+Established the Decision Tree and Random Forest model for close price prediction.
+
+### In-progress
 
 ---
 
@@ -251,10 +261,10 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 - ✅ Data Exploration
 - ✅ Data Preprocessing
 - ✅ Linear Regression
-- ⏳ Model Evaluation (RMSE, MAE, MAPE, R²)
-- ⏳ Feature Engineering
+- ✅ Model Evaluation (RMSE, MAE, MAPE, R²)
 - ⏳ Decision Tree
 - ⏳ Random Forest
+- ⏳ Feature Engineering
 - ⏳ XGBoost
 - ⏳ Hyperparameter Tuning
 - ⏳ Model Comparison
