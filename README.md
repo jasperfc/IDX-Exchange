@@ -90,6 +90,7 @@ Model Evaluation
 
 | Week | Task | Status |
 |------|------|:------:|
+| Week 1 | Orientation & Setup | ✅ |
 | Week 2 | Exploratory Data Analysis | ✅ |
 | Week 3 | Data Preprocessing | ✅ |
 | Week 4 | Linear Regression Baseline | ✅ |
