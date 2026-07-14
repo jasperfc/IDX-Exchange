@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
-![Status](https://img.shields.io/badge/Status-Week%203-yellow)
+![Status](https://img.shields.io/badge/Status-Week%204-success)
 ![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
 Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
@@ -16,12 +16,21 @@ This project is part of the **IDX Exchange Data Science Internship**.
 
 The objective is to build an end-to-end machine learning pipeline that predicts residential property sale prices based on property characteristics and transaction information from the California Regional Multiple Listing Service (CRMLS).
 
-Current work focuses on:
+Current work includes:
 
 - Exploratory Data Analysis (EDA)
-- Data preprocessing
-- Feature preparation
-- Building a baseline prediction model
+- Leakage-aware data preprocessing
+- Chronological train/test splitting
+- Baseline Linear Regression modeling
+- Model evaluation and performance benchmarking
+
+## Machine Learning Pipeline
+
+The project follows a chronological, leakage-aware machine learning workflow.
+
+All learned preprocessing operations—including missing-value imputation, outlier threshold estimation, categorical encoding, and feature scaling—are fitted exclusively on the training data and then applied unchanged to the held-out testing period.
+
+The training-window length is configurable through the `TRAIN_MONTHS` parameter, allowing different amounts of historical transaction data to be evaluated while preserving a realistic future-period testing scenario.
 
 ---
 
@@ -60,25 +69,25 @@ Residential Property Filtering
 Data Cleaning
         │
         ▼
-Data Type Conversion
+Data Type Standardization
         │
         ▼
-Missing Value Handling
+Chronological Train/Test Split
         │
         ▼
-Outlier Removal
+Training-Based Outlier Filtering
         │
         ▼
-Train/Test Split
+Missing Value Imputation
         │
         ▼
-One-Hot Encoding
+Categorical Encoding
         │
         ▼
-Feature Selection
+Feature Scaling
         │
         ▼
-Model Development
+Linear Regression Baseline
         │
         ▼
 Model Evaluation
@@ -123,13 +132,17 @@ Prepared the dataset for machine learning.
 
 ### Tasks Completed
 
-- Filtered residential single-family properties
-- Converted columns to appropriate data types
-- Handled missing values
-- Removed unrealistic observations and outliers
-- Split the dataset into training and testing sets
-- Applied One-Hot Encoding to categorical variables
-- Exported processed datasets
+- Filtered residential single-family transactions
+- Standardized data types
+- Removed duplicate and logically invalid records
+- Applied chronological train/test splitting
+- Configured a flexible historical training window
+- Performed training-based outlier filtering
+- Excluded target leakage and non-modeling features
+- Imputed missing values using training-set statistics
+- Applied categorical and multi-value encoding
+- Standardized continuous numerical features
+- Exported cleaned and encoded datasets
 
 ---
 
@@ -139,14 +152,13 @@ Established the first baseline model for close price prediction.
 
 ### Tasks Completed
 
-- Loaded cleaned and encoded datasets from the preprocessing stage
-- Defined `ClosePrice` as the target variable
-- Separated features and target variables for training and testing
-- Summarized the target variable distribution
+- Loaded the processed training and testing datasets
+- Prepared the feature matrix and prediction target
 - Trained a baseline Linear Regression model
-- Generated predictions on the test set
-- Evaluated model performance using R², MAE, and RMSE
-- Recorded baseline results for future model comparison
+- Generated predictions on the held-out test set
+- Evaluated model performance using R², MAE, MAPE, MdAPE, and RMSE
+- Visualized prediction performance
+- Established baseline results for future model comparison
 
 ---
 
@@ -187,13 +199,15 @@ data/cleaned/
 
 These lightweight datasets are included in the repository for demonstration purposes.
 
-Generated files:
+Generated files (example for a 30-month training window):
 
-- cleaned_crmls.csv
-- train_clean.csv
-- test_clean.csv
-- train_encoded.csv
-- test_encoded.csv
+- cleaned_crmls_30m.csv
+- train_clean_30m.csv
+- test_clean_30m.csv
+- train_encoded_30m.csv
+- test_encoded_30m.csv
+
+The training-window length is configurable through the `TRAIN_MONTHS` parameter in the preprocessing notebook.
 
 ---
 
@@ -263,9 +277,10 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 - ✅ Data Preprocessing
 - ✅ Linear Regression
 - ✅ Model Evaluation (RMSE, MAE, MAPE, R²)
-- ⏳ Decision Tree
-- ⏳ Random Forest
+- ⏳ Decision Tree Regression
+- ⏳ Random Forest Regression
 - ⏳ Feature Engineering
+- ⏳ Training-window comparison
 - ⏳ XGBoost
 - ⏳ Hyperparameter Tuning
 - ⏳ Model Comparison
