@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
-![Status](https://img.shields.io/badge/Status-Week%204-success)
+![Status](https://img.shields.io/badge/Status-Week%205-success)
 ![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
 Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
@@ -22,6 +22,9 @@ Current work includes:
 - Leakage-aware data preprocessing
 - Chronological train/test splitting
 - Baseline Linear Regression modeling
+- Decision Tree regression modeling
+- Random Forest regression modeling
+- Hyperparameter exploration for Decision Trees
 - Model evaluation and performance benchmarking
 
 ## Machine Learning Pipeline
@@ -47,7 +50,7 @@ project/
 ├── notebooks/
 │   ├── notebook_01_data_exploration.ipynb
 │   ├── notebook_02_data_preprocessing.ipynb
-│   └── notebook_03_baseline_model.ipynb
+│   ├── notebook_03_baseline_model.ipynb
 │   └── notebook_04_model_comparison.ipynb
 │
 ├── README.md
@@ -90,7 +93,13 @@ Feature Scaling
 Linear Regression Baseline
         │
         ▼
-Model Evaluation
+Decision Tree Regression
+        │
+        ▼
+Random Forest Regression
+        │
+        ▼
+Model Comparison
 ```
 
 ---
@@ -103,7 +112,7 @@ Model Evaluation
 | Week 2 | Exploratory Data Analysis | ✅ |
 | Week 3 | Data Preprocessing | ✅ |
 | Week 4 | Linear Regression Baseline | ✅ |
-| Week 5 | Decision Tree and Random Forest Regressors | ⏳ |
+| Week 5 | Decision Tree and Random Forest Regressors | ✅ |
 | Week 6 | Feature Engineering | ⏳ |
 | Week 6+ | Advanced Models & Optimization | ⏳ |
 
@@ -162,13 +171,33 @@ Established the first baseline model for close price prediction.
 
 ---
 
-## 04 - Additional Models (Decision Tree and Random Forest)
+## 04 - Model Comparison (Decision Tree & Random Forest)
 
-Established the Decision Tree and Random Forest model for close price prediction.
+Developed and evaluated tree-based machine learning models for residential property price prediction.
 
-### In-progress
+### Tasks Completed
+
+- Trained a Decision Tree Regressor
+- Evaluated multiple maximum tree depths
+- Selected the best-performing Decision Tree configuration
+- Visualized the Decision Tree structure
+- Analyzed Decision Tree feature importance
+- Trained a Random Forest Regressor
+- Analyzed Random Forest feature importance
+- Compared model performance against the Linear Regression baseline
+- Evaluated models using R², MAE, MAPE, MdAPE, and RMSE
 
 ---
+
+# 📊 Current Model Performance
+
+The table below summarizes the predictive performance of the regression models evaluated on the held-out testing dataset.
+
+| Model | R² | MAE | MAPE | MdAPE | RMSE |
+|------|------:|------:|------:|------:|------:|
+| Linear Regression | 0.6405 | $368,707.93 | 33.8549% | 25.1820% | $586,081.35 |
+| Decision Tree Regressor | 0.8130 | $208,460.26 | 15.1352% | **9.9675%** | $422,718.61 |
+| Random Forest Regressor | **0.8609** | **$192,948.57** | **14.8471%** | 10.1211% | **$364,520.98** |
 
 # 🎯 Prediction Target
 
@@ -277,8 +306,8 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 - ✅ Data Preprocessing
 - ✅ Linear Regression
 - ✅ Model Evaluation (RMSE, MAE, MAPE, R²)
-- ⏳ Decision Tree Regression
-- ⏳ Random Forest Regression
+- ✅ Decision Tree Regression
+- ✅ Random Forest Regression
 - ⏳ Feature Engineering
 - ⏳ Training-window comparison
 - ⏳ XGBoost
