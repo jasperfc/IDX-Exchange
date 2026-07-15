@@ -103,7 +103,7 @@ Model Evaluation
 | Week 2 | Exploratory Data Analysis | ✅ |
 | Week 3 | Data Preprocessing | ✅ |
 | Week 4 | Linear Regression Baseline | ✅ |
-| Week 5 | Decision Tree and Random Forest regressors | ⏳ |
+| Week 5 | Decision Tree and Random Forest Regressors | ⏳ |
 | Week 6 | Feature Engineering | ⏳ |
 | Week 6+ | Advanced Models & Optimization | ⏳ |
 
