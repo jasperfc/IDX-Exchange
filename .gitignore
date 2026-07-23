@@ -1,22 +1,53 @@
-# Raw data
+# ==========================
+# Raw datasets
+# ==========================
 Data/raw/
 
-# Metadata
-Data/*.pdf
-
-# Full processed data (local only)
+# Full processed datasets (keep local only)
 Data/cleaned_full/
 
+# ==========================
+# Internal reference documents
+# ==========================
+Data/*.pdf
+*.pdf
+*.doc
+*.docx
+
+AVM_Data_Science_Best_Practices v.1.docx
+AVM_Data_Science_Best_Practices v.1.pdf
+Data Science v.4.pdf
+
+# ==========================
 # Python
+# ==========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
 venv/
-.env
+env/
+ENV/
 
+# Environment variables
+.env
+.env.*
+
+# ==========================
 # Jupyter
+# ==========================
 .ipynb_checkpoints/
 
-# OS files
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
+
+# ==========================
+# Operating System
+# ==========================
 .DS_Store
 Thumbs.db
