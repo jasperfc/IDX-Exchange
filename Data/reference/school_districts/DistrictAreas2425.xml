@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <title>California School Districts Areas 2024-25</title>
+                <geoform>vector digital data</geoform>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>This layer serves as the authoritative geographic data source for all school district area boundaries in California. School districts are single purpose governmental units that operate schools and provide public educational services to residents within geographically defined areas. Agencies considered school districts that do not use geographically defined service areas to determine enrollment are excluded from this data set. In order to view districts represented as point locations, please see the "California School District Offices" layer. The school districts in this layer are enriched with additional district-level attribute information from the California Department of Education's data collections. These data elements add meaningful statistical and descriptive information that can be visualized and analyzed on a map and used to advance education research or inform decision making.School districts are categorized as either elementary (primary), high (secondary) or unified based on the general grade range of the schools operated by the district. Elementary school districts provide education to the lower grade/age levels and the high school districts provide education to the upper grade/age levels while unified school districts provide education to all grade/age levels in their service areas. Boundaries for the elementary, high and unified school district layers are combined into a single file. The resulting composite layer includes areas of overlapping boundaries since elementary and high school districts each serve a different grade range of students within the same territory. The 'DistrictType' field can be used to filter and display districts separately by type. Boundary lines are maintained by the California Department of Education (CDE) and are effective in the 2024-25 academic year . The CDE works collaboratively with the US Census Bureau to update and maintain boundary information as part of the federal School District Review Program (SDRP). The Census Bureau uses these school district boundaries to develop annual estimates of children in poverty to help the U.S. Department of Education determine the annual allocation of Title I funding to states and school districts. The National Center for Education Statistics (NCES) also uses the school district boundaries to develop a broad collection of district-level demographic estimates from the Census Bureau’s American Community Survey (ACS).The school district enrollment and demographic information are based on student enrollment counts collected on Fall Census Day (first Wednesday in October) in the 2024-25 academic year. These data elements are collected by the CDE through the California Longitudinal Achievement System (CALPADS) and can be accessed as publicly downloadable files from the Data &amp;amp; Statistics web page on the CDE website https://www.cde.ca.gov/ds. </abstract>
+            <purpose>California school district composite layer that includes elementary, secondary and unified school district area boundaries for the 2024-25 academic year supplemented with district-level demographics from the California Department of Education's (CDE) data collections.                         
+</purpose>
+        </descript>
+        <status>
+            <update>Annually</update>
+        </status>
+        <spdom>
+            <bounding>
+                <westbc>-124.506027</westbc>
+                <eastbc>-113.498425</eastbc>
+                <northbc>42.068506</northbc>
+                <southbc>32.423819</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>ISO 19115 Topic Categories</themekt>
+                <themekey>boundaries</themekey>
+            </theme>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>school district area</themekey>
+                <themekey>master</themekey>
+                <themekey>open data</themekey>
+                <themekey>Education</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>None</useconst>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>California Department of Education</cntorg>
+                    <cntper>CDE GIS</cntper>
+                </cntorgp>
+                <cntpos>GIS Specialist</cntpos>
+            </cntinfo>
+        </ptcontac>
+        <datacred>California Department of Education (CDE), U.S. Census Bureau, National Center for Education Statistics (NCES)</datacred>
+        <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.9.1.28388</native>
+    </idinfo>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>939</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>California School Districts</enttypl>
+                <enttypd>California school district composite layer that includes elementary, secondary and unified school district area boundaries for the 2020-21 school year supplemented with district-level demographics from the California Department of Education's (CDE) data collections.</enttypd>
+                <enttypds>California Department of Education</enttypds>
+            </enttyp>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                        
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                    
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                        
+                    <udom>Coordinates defining the features.</udom>
+                                    
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Year</attrlabl>
+                <attrdef>The academic year when school district boundaries are effective.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>FedID</attrlabl>
+                <attrdef>The 7 digit code derived from the US Department of Education's Common Core of Data (CCD) and used by federal agencies to uniquely identify all school districts nationwide.  The first 2 digits identify the state and the following 5 digits identify the district.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>CDCode</attrlabl>
+                <attrdef>The 7 digit code developed and maintained by the California Department of Education (CDE) to uniquely identify public school districts within state.  The first two digits identify the county and the next five digits identify the school district.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>CDSCode</attrlabl>
+                <attrdef>The 14 digit code developed and maintained by the California Department of Education that serves to uniquely identify each school and district in the state.  The first two digits identify the county, the next five digits identify the school district and the last seven digits identify the school.  School districts will have a CDS code ending in '0000000', indicating the feature is a district and not a school.</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>CountyName</attrlabl>
+                <attrdef>The name of county that oversees the school district.</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>DistrictName</attrlabl>
+                <attrdef>The name of the school district.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>DistrictType</attrlabl>
+                <attrdef>A description of the type of administrative authority assigned to a school district based on the general grade range of the schools operated by the district.  Field values are derived from the [DistrictOwnershipCode] (DOC) field in the California Department of Education school directory.
+
+Elementary =  Provides education to the lower grade/age levels within a geographically defined service area.
+High  = Provides education to the upper grade/age levels within a geographically defined service area.
+Unified  = Provides education to all grade/age levels within a geographically defined service area.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>GradeLow</attrlabl>
+                <attrdef>The lowest grade offered or supported by the school district based on the California Department of Education's (CDE) California School Directory.  This grade level may differ from other grade span values that identify actual grades served based on district enrollment.  It may also differ from the US Census Bureau's definition of a district's grade span which excludes grades served by charter schools.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>GradeHigh</attrlabl>
+                <attrdef>The highest grade offered or supported by the school district based on the California Department of Education's (CDE) California School Directory.  This grade level may differ from other grade span values that identify actual grades served based on district enrollment.  It may also differ from the US Census Bureau's definition of a district's grade span which excludes grades served by charter schools.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>GradeLowCensus</attrlabl>
+                <attrdef>The lowest grade for which a school district is financially responsible, according to the US Census Bureau.  The Census Bureau defines a district’s grade span based on financial responsibility in order to calculate student poverty rates by grade level and allocate federal funding.
+</attrdef>
+                <attrdefs>California Department of Education, U.S. Census Bureau</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>GradeHighCensus</attrlabl>
+                <attrdef>The highest grade for which a school district is financially responsible, according to the US Census Bureau.  The Census Bureau defines a district’s grade span based on financial responsibility in order to calculate student poverty rates by grade level and allocate federal funding.
+</attrdef>
+                <attrdefs>California Department of Education, U.S. Census Bureau</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>AssistStatus</attrlabl>
+                <attrdef>The level of assistance offered to improve student outcomes based on California's Statewide System of Support model.
+
+General Assistance = LEA is eligible to receive general support 
+Differentiated Assistance = LEA is eligible to receive differentiated support
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>CongressUS</attrlabl>
+                <attrdef>The U.S. congressional district assigned to the school district based on the intersection of the school district and legislative district's territories.  The 53 congressional districts within the State of California represent the geographically defined territories used for electing members to the  U.S.  House of Representatives.  The current U.S. congressional district boundaries in California were approved by the California Citizens Redistricting Commission following the completion of the 2020 United States Census and will remain valid until 2030</attrdef>
+                <attrdefs>California Department of Education, U.S. Census Bureau</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>SenateCA</attrlabl>
+                <attrdef>The California state senate district assigned to the school district based on the intersection of the school district and legislative district territories. The 40 state senate districts are the geographically defined territories used for electing members to the upper chamber of the California State Legislature.  The current state senate district boundaries were approved by the California Citizens Redistricting Commission following the completion of the 2020 United States Census and will remain valid until 2030
+</attrdef>
+                <attrdefs>California Department of Education, U.S. Census Bureau</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>AssemblyCA</attrlabl>
+                <attrdef>The California state assembly district assigned to the school district based on the intersection of the school district and legislative district territories.  The 80 California state assembly districts represent the geographically defined territories used for electing members to the lower chamber of the California State Legislature.  The current state assembly district boundaries were approved by the California Citizens Redistricting Commission following the completion of the 2020 United States Census and will remain valid until 2030
+</attrdef>
+                <attrdefs>California Department of Education, U.S. Census Bureau</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>LocaleDistrict</attrlabl>
+                <attrdef>A general geographic indicator that classifies the type of area in which a school district is located.  Unlike NCES school-level locale assignments that are based on the physical location of the school, NCES district-level locale assignments are based on enrollment-weighted locale assignments of the schools operated by the district. 
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>UpdateNotes</attrlabl>
+                <attrdef>Additional information identifying the academic year when the school district boundaries became effective.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>EnrollTotal</attrlabl>
+                <attrdef>The total number of students enrolled in the district on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+                <attrdefs>California Department of Education</attrdefs>
+            </attr>
+            <attr>
+                <attrlabl>EnrollCharter</attrlabl>
+                <attrdef>The total number of students in the district enrolled in charter schoolson Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>EnrollNonCharter</attrlabl>
+                <attrdef>The total number of students in the district enrolled in non charter schools on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>AAcount</attrlabl>
+                <attrdef>The enrollment count of African American students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>AApct</attrlabl>
+                <attrdef>The enrollment rate of African American students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>AIcount</attrlabl>
+                <attrdef>The enrollment count of American Indian students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>AIpct</attrlabl>
+                <attrdef>The enrollment rate of American Indian students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>AScount</attrlabl>
+                <attrdef>The enrollment count of Asian students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>ASpct</attrlabl>
+                <attrdef>The enrollment rate of Asian students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>FIcount</attrlabl>
+                <attrdef>The enrollment count of Filipino students on Fall Census Day (first  Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>FIpct</attrlabl>
+                <attrdef>The enrollment rate of Filipino students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>HIcount</attrlabl>
+                <attrdef>The enrollment count of Hispanic students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>HIpct</attrlabl>
+                <attrdef>The enrollment rate of Hispanic students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>MRcount</attrlabl>
+                <attrdef>The enrollment count of students reporting two or more races on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>MRpct</attrlabl>
+                <attrdef>The enrollment rate of students reporting two or more races on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>PIcount</attrlabl>
+                <attrdef>The enrollment count of Pacific Islander students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>PIpct</attrlabl>
+                <attrdef>The enrollment rate of Pacific Islander students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>WHcount</attrlabl>
+                <attrdef>The enrollment count of white students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>WHpct</attrlabl>
+                <attrdef>The enrollment rate of white students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>NRcount</attrlabl>
+                <attrdef>The enrollment count of students not reporting a race on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>NRpct</attrlabl>
+                <attrdef>The enrollment rate of students not reporting a race on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>ELcount</attrlabl>
+                <attrdef>The enrollment count of English Learner students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>ELpct</attrlabl>
+                <attrdef>The enrollment rate of English Learner students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>FOScount</attrlabl>
+                <attrdef>The enrollment count of foster students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>FOSpct</attrlabl>
+                <attrdef>The enrollment rate of foster students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>HOMcount</attrlabl>
+                <attrdef>The enrollment count of homeless students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>HOMpct</attrlabl>
+                <attrdef>The enrollment rate of homeless students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>MIGcount</attrlabl>
+                <attrdef>The enrollment count of migrant students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>MIGpct</attrlabl>
+                <attrdef>The enrollment rate of migrant students on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>SWDcount</attrlabl>
+                <attrdef>The enrollment count of students with disabilities on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>SWDpct</attrlabl>
+                <attrdef>The enrollment rate of students with disabilities on Fall Census Day (first Wednesday in October) of the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>SEDcount</attrlabl>
+                <attrdef>The enrollment count of socioeconomically disadvantaged students on Fall Census Day (first Wednesday in October) in the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>SEDpct</attrlabl>
+                <attrdef>The enrollment rate of students who were considered socioeconomically disadvantaged  on Fall Census Day (first Wednesday in October) in the academic year found in the 'Year' field.
+</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>Shape_Length</attrlabl>
+                <attrdef>Length of feature in internal units.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                        
+                    <udom>Positive real numbers that are automatically generated.</udom>
+                                    
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape_Area</attrlabl>
+                <attrdef>Area of feature in internal units squared.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                        
+                    <udom>Positive real numbers that are automatically generated.</udom>
+                                    
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>DistrctAreaSqMi</attrlabl>
+            </attr>
+        </detailed>
+    </eainfo>
+    <metainfo>
+        <metd>20250825</metd>
+        <metc>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>California Department of Education</cntorg>
+                    <cntper>CDE GIS</cntper>
+                </cntorgp>
+                <cntpos>GIS Specialist</cntpos>
+            </cntinfo>
+        </metc>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>
