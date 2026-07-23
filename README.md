@@ -282,7 +282,7 @@ The training window is configurable through the `TRAIN_MONTHS` parameter.
 Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/jasperfc/IDX-Exchange.git
 ```
 
 Install dependencies
