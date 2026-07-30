@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
-![Status](https://img.shields.io/badge/Status-Week%206-success)
+![Status](https://img.shields.io/badge/Status-Week%207-success)
 ![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
 Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
@@ -22,15 +22,15 @@ Current work includes:
 - Leakage-aware data preprocessing
 - Chronological train/validation/test splitting
 - Property and geographic feature engineering
-- Linear Regression, Decision Tree, and Random Forest modeling
-- Validation-based Decision Tree and Random Forest depth selection
+- Linear Regression, Decision Tree, Random Forest, and XGBoost modeling
+- Validation-based hyperparameter selection for tree-based models
 - Model evaluation and performance comparison
 
 ## Machine Learning Pipeline
 
 The project follows a chronological, leakage-aware workflow. The second-most-recent complete month is reserved for validation and the latest complete month is reserved for final testing. All learned preprocessing operations are fitted on the training data and applied unchanged to both held-out periods.
 
-Decision Tree and Random Forest hyperparameters are selected using the validation month. After model choices are frozen, the selected models are refitted on the combined training and validation data and evaluated once on the untouched test month.
+Decision Tree, Random Forest, and XGBoost hyperparameters are selected using the validation month. After model choices are frozen, the selected models are refitted on the combined training and validation data and evaluated once on the untouched test month.
 
 The training window is configurable through `TRAIN_MONTHS`, and `ClosePrice` outlier thresholds are calculated from the training set only.
 
@@ -57,7 +57,8 @@ project/
 │   ├── notebook_01_exploration.ipynb
 │   ├── notebook_02_preprocessing.ipynb
 │   ├── notebook_03_baseline_model.ipynb
-│   └── notebook_04_model_comparison.ipynb
+│   ├── notebook_04_model_comparison.ipynb
+│   └── notebook_05_advanced_models.ipynb
 │
 ├── README.md
 ├── requirements.txt
@@ -132,7 +133,8 @@ One-Time Test-Month Evaluation & Model Comparison
 | Week 4 | Linear Regression Baseline | ✅ |
 | Week 5 | Decision Tree and Random Forest Regressors | ✅ |
 | Week 6 | Property & Geographic Feature Engineering | ✅ |
-| Week 7+ | Advanced Models & Optimization | ⏳ |
+| Week 7 | Advanced Model (XGBoost) | ✅ |
+| Week 8 | Evaluation Expansion | ⏳ |
 
 ---
 
@@ -220,6 +222,25 @@ Developed and evaluated tree-based machine learning models for residential prope
 
 ---
 
+## 05 - Advanced Model (XGBoost)
+
+Developed and evaluated an XGBoost Regressor using the same chronological, leakage-aware workflow.
+
+### Tasks Completed
+
+- Trained XGBoost candidate models using the training period
+- Evaluated 27 combinations of `max_depth`, `learning_rate`, and `n_estimators` on the May 2026 validation month
+- Used validation R² as the primary selection metric while also recording MAE, MdAPE, RMSE, and fitting time
+- Selected `max_depth = 9`, `learning_rate = 0.08`, and `n_estimators = 900`
+- Refit the selected model using the combined training and validation data
+- Evaluated the final model once on the untouched June 2026 test month
+- Compared XGBoost with the Linear Regression, Decision Tree, and Random Forest benchmarks
+- Visualized actual versus predicted close prices
+
+The selected configuration was the fastest candidate within 0.001 validation R² of the best result. It achieved validation R² of 0.9025, compared with the best observed validation R² of 0.9034, while reducing fitting time from 26.18 seconds to 16.33 seconds in this run.
+
+---
+
 # 📊 Current Model Performance
 
 The table below reports the current final performance on the untouched June 2026 test set. Model configurations were selected using May 2026 validation results; the final models were then refitted on training plus validation data before test evaluation.
@@ -228,9 +249,10 @@ The table below reports the current final performance on the untouched June 2026
 |---------------------------|-------:|---------------:|---------:|---------:|---------------:|
 | Linear Regression         | 0.6410 | USD 358,844.63 | 33.0237% | 24.9839% | USD 588,238.00 |
 | Decision Tree Regressor   | 0.8131 | USD 210,221.47 | 15.5580% | 10.1449% | USD 424,456.10 |
-| Random Forest Regressor   | **0.8749** | **USD 168,931.31** | **12.4763%** | **7.9706%** | **USD 347,200.70** |
+| Random Forest Regressor   | 0.8749 | USD 168,931.31 | 12.4763% | **7.9706%** | USD 347,200.70 |
+| XGBoost Regressor         | **0.9026** | **USD 156,957.96** | **12.1629%** | 8.2044% | **USD 306,452.34** |
 
-Random Forest produced the strongest result across all reported metrics in the current evaluation.
+XGBoost produced the strongest R², MAE, MAPE, and RMSE. Random Forest retained a slightly lower MdAPE, at 7.9706% compared with XGBoost's 8.2044%. XGBoost is therefore the strongest current model when prioritizing overall fit and large-error reduction, while the median percentage-error difference remains a relevant caveat.
 
 ---
 
@@ -317,6 +339,7 @@ The training window is configurable through the `TRAIN_MONTHS` parameter.
 - pandas
 - NumPy
 - scikit-learn
+- XGBoost
 - GeoPandas
 - Shapely
 - matplotlib
@@ -366,8 +389,8 @@ pip install -r requirements.txt
 
 # 🚀 Future Work
 
-- ⏳ XGBoost
-- ⏳ Broader hyperparameter optimization beyond the current depth search
+- ⏳ Evaluation by price band
+- ⏳ Broader XGBoost optimization, including regularization and sampling parameters
 - ⏳ Rolling-origin validation across multiple historical cutoffs
 - ⏳ Controlled 106-versus-127 feature-set performance comparison
 - ⏳ Training-window comparison
