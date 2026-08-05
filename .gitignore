@@ -6,6 +6,9 @@ Data/raw/
 # Full processed datasets (keep local only)
 Data/cleaned_full/
 
+# Trained model artifacts (keep local only)
+models/*.joblib
+
 # ==========================
 # Internal reference documents
 # ==========================

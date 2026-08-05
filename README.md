@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
-![Status](https://img.shields.io/badge/Status-Week%207-success)
+![Status](https://img.shields.io/badge/Status-Week%208-success)
 ![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
 Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
@@ -26,6 +26,8 @@ Current work includes:
 - Validation-based hyperparameter selection for tree-based models
 - Three-version advanced-model experiments: baseline, tuned, and final test evaluation
 - Model evaluation and performance comparison
+- Saved final-model artifacts with feature-schema validation
+- Evaluation expansion by close-price quintile, residual direction, and APE distribution
 
 ## Machine Learning Pipeline
 
@@ -52,14 +54,18 @@ project/
 │   ├── raw/                  # Raw source data (excluded from GitHub)
 │   ├── cleaned/              # Sample processed datasets
 │   ├── cleaned_full/         # Full processed datasets
-│   └── reference/            # Reference files
+│   ├── reference/            # Reference files
+│   └── results/              # Model evaluation summaries
+│
+├── models/                   # Local trained-model artifacts (excluded from GitHub)
 │
 ├── notebook/
 │   ├── notebook_01_exploration.ipynb
 │   ├── notebook_02_preprocessing.ipynb
 │   ├── notebook_03_baseline_model.ipynb
 │   ├── notebook_04_model_comparison.ipynb
-│   └── notebook_05_advanced_models.ipynb
+│   ├── notebook_05_advanced_models.ipynb
+│   └── notebook_06_evaluation.ipynb
 │
 ├── README.md
 ├── requirements.txt
@@ -120,6 +126,15 @@ Selected Models Refit on Training + Validation
         │
         ▼
 One-Time Test-Month Evaluation & Model Comparison
+        │
+        ▼
+Saved Final Models & Feature Schema
+        │
+        ▼
+Price-Band, Residual & APE Distribution Analysis
+        │
+        ▼
+Metrics Summary Export
 ```
 
 ---
@@ -135,6 +150,11 @@ One-Time Test-Month Evaluation & Model Comparison
 | Week 5 | Decision Tree and Random Forest Regressors | ✅ |
 | Week 6 | Property & Geographic Feature Engineering | ✅ |
 | Week 7 | Advanced Models (XGBoost and LightGBM), Hyperparameter Tuning, and Final Model Comparison | ✅ |
+| Week 8 | Evaluation Expansion, Price-Band Error Analysis, and Metrics Summary | ✅ |
+| Week 9 | Optional Simple Prediction App (Streamlit) | ⏳ Optional |
+| Week 10 | Documentation and Reproducibility Instructions | ✅ Core documentation complete |
+| Week 11 | Practice Presentation and Slide Draft | ⏳ |
+| Week 12 | Final Presentation and Repository Handoff | ⏳ |
 
 ---
 
@@ -259,6 +279,33 @@ The selection rule chooses the fastest candidate within 0.001 validation R² of 
 
 ---
 
+## 06 - Evaluation Expansion
+
+Expanded the final test-month evaluation beyond top-line model metrics and examined how prediction performance changes across price levels and error distributions.
+
+### Tasks Completed
+
+- Reloaded the five saved final models and verified the saved feature schema before prediction
+- Evaluated every model on the same untouched June 2026 testing month
+- Reported R², MAE, MAPE, MdAPE, and RMSE in a consolidated model scorecard
+- Compared overall model fit, percentage errors, and dollar errors using separate visualizations
+- Divided actual ClosePrice into five testing-month quintiles and compared MdAPE by model and price band
+- Calculated median residuals by price band to identify systematic overprediction and underprediction
+- Compared property-level APE distributions using median, P90, and P95 statistics
+- Exported `data/results/metrics_summary.csv`
+
+### Evaluation Findings
+
+- LightGBM produced the strongest overall R², MAE, MAPE, and RMSE
+- Random Forest produced the lowest overall MdAPE at 7.9310%
+- Random Forest achieved the lowest price-band MdAPE in the three lowest quintiles, XGBoost was marginally strongest in the fourth quintile, and LightGBM was strongest in the highest quintile
+- All five models typically underpredicted the highest-price quintile, which ranged from approximately USD 1.65 million to USD 8.20 million in the June 2026 testing month
+- LightGBM produced the lowest P90 and P95 APE, indicating the strongest control of upper-tail percentage errors
+
+The price bands are testing-month quintiles rather than fixed business thresholds, so their dollar boundaries will change when the evaluation dataset changes. Results also represent one held-out month; rolling-origin evaluation remains necessary to assess performance stability across multiple market periods.
+
+---
+
 # 📊 Current Model Performance
 
 The table below reports the current final performance on the untouched June 2026 test set. Model configurations were selected using May 2026 validation results; the final models were then refitted on training plus validation data before test evaluation.
@@ -352,6 +399,22 @@ The training window is configurable through the `TRAIN_MONTHS` parameter.
 
 ---
 
+## Evaluation Results
+
+Location:
+
+```text
+data/results/
+```
+
+Files:
+
+- `metrics_summary.csv`
+
+This model scorecard contains the final June 2026 test metrics for Linear Regression, Decision Tree, Random Forest, XGBoost, and LightGBM.
+
+---
+
 # 🛠️ Technologies
 
 - Python
@@ -360,6 +423,7 @@ The training window is configurable through the `TRAIN_MONTHS` parameter.
 - scikit-learn
 - XGBoost
 - LightGBM
+- joblib
 - GeoPandas
 - Shapely
 - matplotlib
@@ -396,6 +460,30 @@ pip install -r requirements.txt
 
 ---
 
+# 🔁 Reproducing the Results
+
+Run the notebooks from the `notebook/` directory in numerical order because later notebooks depend on datasets or model artifacts produced by earlier notebooks:
+
+1. `notebook_01_exploration.ipynb` explores and filters the raw CRMLS data.
+2. `notebook_02_preprocessing.ipynb` regenerates the processed datasets under `data/cleaned/` and `data/cleaned_full/`.
+3. `notebook_03_baseline_model.ipynb` trains and saves the final Linear Regression model and feature schema.
+4. `notebook_04_model_comparison.ipynb` trains and saves the final Decision Tree and Random Forest models.
+5. `notebook_05_advanced_models.ipynb` trains and saves the final XGBoost and LightGBM models.
+6. `notebook_06_evaluation.ipynb` reloads all five saved models, creates the evaluation figures, and exports `data/results/metrics_summary.csv`.
+
+The notebooks use paths relative to the `notebook/` directory. Launch Jupyter from that directory to reproduce the current workflow:
+
+```bash
+cd notebook
+jupyter notebook
+```
+
+Raw CRMLS files are excluded from GitHub, so reproducing the full preprocessing workflow requires access to the source files expected under `data/raw/`. The lightweight processed datasets in `data/cleaned/` can be used to inspect the downstream modeling workflow without publishing the raw source data.
+
+The Streamlit application is an optional Week 9 deliverable and has not yet been implemented. Its launch instructions and `streamlit` dependency will be added if the app is completed.
+
+---
+
 # 📌 Repository Notes
 
 - Raw CRMLS source data is excluded from GitHub.
@@ -404,19 +492,21 @@ pip install -r requirements.txt
 - Individual school-district identity codes are retained in cleaned property-level data but are not used by the current models; they remain available for future experiments.
 - The current models use only the three lower-dimensional district-system indicators: elementary, high, and unified.
 - Running the preprocessing notebook regenerates the processed datasets.
+- Notebooks 3-5 save the final fitted models and feature schema under `models/` for reuse in evaluation and deployment; these local joblib artifacts are excluded from GitHub.
+- Notebook 6 reloads the saved models and exports the required Week 8 scorecard to `data/results/metrics_summary.csv`.
 
 ---
 
-# 🚀 Future Work
+# 🚀 Remaining Internship Milestones
 
-- ⏳ Evaluation and error analysis by price band, especially for high-priced properties
-- ⏳ Exploratory hyperparameter-importance analysis for the XGBoost and LightGBM tuning results
-- ⏳ Broader boosted-tree optimization, including regularization and sampling parameters
-- ⏳ Rolling-origin validation across multiple historical cutoffs
-- ⏳ Controlled 106-versus-127 feature-set performance comparison
-- ⏳ Training-window comparison
-- ⏳ Optional MLP benchmark after establishing a stronger neural-network tuning and validation plan
-- ⏳ Exact dependency-version pinning or lock-file generation
+- ⏳ **Week 9 (optional):** Build `app.py`, a Streamlit prediction app that loads a saved model and predicts price from LivingArea, Beds, Baths, and LotSize inputs.
+- ✅ **Week 10:** Complete the core README documentation covering the dataset source, preprocessing, models, results, setup, and notebook rerun sequence. Add Streamlit launch instructions only if the optional app is implemented.
+- ⏳ **Week 11:** Prepare a slide draft covering the data, methods, models, evaluation findings, and an optional Streamlit demonstration, then rehearse the presentation.
+- ⏳ **Week 12:** Deliver the final presentation and complete the repository handoff with the finalized documentation, slides, and any implemented app or demo materials.
+
+Additional model tuning, rolling-origin validation, geographic error analysis, neural-network experiments, and controlled feature-set comparisons are possible technical extensions, but they are not part of the remaining required internship milestones in the current project schedule.
+
+The schedule labels the Week 9 Streamlit app as optional, while the Week 12 handoff description also mentions `app.py` and a live demo. If the optional app is skipped, confirm the expected final demo and handoff scope with the internship supervisor.
 
 ---
 
