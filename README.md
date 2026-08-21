@@ -72,6 +72,22 @@ project/
 └── .gitignore
 ```
 
+## Streamlit Prediction App
+
+The project includes a single-property estimator, encoded-CSV batch prediction,
+and a held-out model comparison view. Install the dependencies and launch it from
+the repository root:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+The single-property form recreates the engineered ratios, interaction features,
+categorical indicators, and training-fitted scaling used by the saved models.
+Batch prediction expects the already encoded 127-feature schema and provides a
+downloadable CSV template in the app.
+
 ---
 
 # 🔄 Project Workflow

@@ -12,3 +12,4 @@ pyogrio
 pyproj
 notebook
 ipykernel
+streamlit
