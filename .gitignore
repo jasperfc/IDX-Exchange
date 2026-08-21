@@ -1,10 +1,10 @@
 # ==========================
 # Raw datasets
 # ==========================
-Data/raw/
+data/raw/
 
 # Full processed datasets (keep local only)
-Data/cleaned_full/
+data/cleaned_full/
 
 # Trained model artifacts (keep local only)
 models/*.joblib
@@ -12,7 +12,7 @@ models/*.joblib
 # ==========================
 # Internal reference documents
 # ==========================
-Data/*.pdf
+data/*.pdf
 *.pdf
 *.doc
 *.docx

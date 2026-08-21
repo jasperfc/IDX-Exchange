@@ -9,10 +9,13 @@ import pandas as pd
 import streamlit as st
 
 
+# Resolve artifacts from the repository root so the app can be launched from any
+# working directory with: streamlit run app.py
 ROOT = Path(__file__).resolve().parent
 MODEL_DIR = ROOT / "models"
 METRICS_PATH = ROOT / "data" / "results" / "metrics_summary.csv"
 
+# Keep user-facing model names separate from their local artifact filenames.
 MODEL_FILES = {
     "LightGBM": "lightgbm.joblib",
     "XGBoost": "xgboost.joblib",
@@ -44,6 +47,7 @@ LEVEL_OPTIONS = ["MultiSplit", "One", "ThreeOrMore", "Two", "Unknown"]
 
 @st.cache_resource
 def load_artifacts() -> tuple[list[str], dict[str, object]]:
+    """Load the saved feature order and fitted models once per app process."""
     features = list(joblib.load(MODEL_DIR / "model_features.joblib"))
     models = {
         name: joblib.load(MODEL_DIR / filename)
@@ -54,14 +58,17 @@ def load_artifacts() -> tuple[list[str], dict[str, object]]:
 
 @st.cache_data
 def load_metrics() -> pd.DataFrame:
+    """Load the held-out test metrics used by the performance page."""
     return pd.read_csv(METRICS_PATH)
 
 
 def safe_ratio(numerator: float, denominator: float) -> float:
+    """Return a ratio while preserving zero-denominator cases for imputation."""
     return numerator / denominator if denominator > 0 else np.nan
 
 
 def scale_value(name: str, value: float) -> float:
+    """Apply the same training-fitted standardization used in Notebook 2."""
     mean, scale = SCALER[name]
     if pd.isna(value):
         # Training medians expressed in raw units.
@@ -78,6 +85,9 @@ def scale_value(name: str, value: float) -> float:
 
 
 def make_feature_row(values: dict, features: list[str]) -> pd.DataFrame:
+    """Convert one raw property form submission into the 127-feature schema."""
+    # Start at zero so absent one-hot categories and false indicators use the
+    # same representation as the encoded training data.
     row = {feature: 0.0 for feature in features}
     close_date = values["CloseDate"]
     bedrooms = float(values["BedroomsTotal"])
@@ -87,6 +97,7 @@ def make_feature_row(values: dict, features: list[str]) -> pd.DataFrame:
     garage = float(values["GarageSpaces"])
     property_age = max(close_date.year - int(values["YearBuilt"]), 0)
 
+    # Copy direct model inputs before deriving ratios and interactions.
     booleans = [
         "ViewYN", "WaterfrontYN", "BasementYN", "PoolPrivateYN",
         "AttachedGarageYN", "FireplaceYN", "NewConstructionYN",
@@ -102,6 +113,8 @@ def make_feature_row(values: dict, features: list[str]) -> pd.DataFrame:
     for name in numeric:
         row[name] = float(values[name])
 
+    # Recreate the temporal, ratio, amenity, and interaction features from the
+    # leakage-aware preprocessing notebook.
     row.update({
         "LivingArea": living_area,
         "AssociationFee": float(values["AssociationFee"]),
@@ -123,6 +136,7 @@ def make_feature_row(values: dict, features: list[str]) -> pd.DataFrame:
         "PremiumAmenityCombo": int(values["PoolPrivateYN"] and values["ViewYN"] and values["FireplaceYN"]),
     })
 
+    # Activate only categories that were present in the training schema.
     age_bucket = "New" if property_age <= 5 else "Modern" if property_age <= 20 else "Mature" if property_age <= 50 else "Historic"
     categorical = [
         f"CountyOrParish_{values['CountyOrParish']}",
@@ -134,12 +148,15 @@ def make_feature_row(values: dict, features: list[str]) -> pd.DataFrame:
         if name in row:
             row[name] = 1
 
+    # Standardize the same ten numerical columns scaled during training, then
+    # enforce the exact saved feature order expected by every model.
     for name in SCALER:
         row[name] = scale_value(name, row[name])
     return pd.DataFrame([row], columns=features).astype(float)
 
 
 def validate_encoded_frame(frame: pd.DataFrame, features: list[str]) -> pd.DataFrame:
+    """Validate and order an uploaded encoded batch before prediction."""
     missing = [feature for feature in features if feature not in frame.columns]
     if missing:
         preview = ", ".join(missing[:8])
@@ -151,7 +168,10 @@ def validate_encoded_frame(frame: pd.DataFrame, features: list[str]) -> pd.DataF
     return result
 
 
+# Configure the page before rendering any Streamlit elements.
 st.set_page_config(page_title="California Home Price Estimator", page_icon="🏠", layout="wide")
+
+# Apply the project-specific prediction card and sidebar theme.
 st.markdown(
     """
     <style>
@@ -313,6 +333,7 @@ st.markdown(
 st.title("🏠 California Home Price Estimator")
 st.caption("A home-price estimation tool trained on historical CRMLS sales data | California residential properties only")
 
+# Stop with an actionable message when local model artifacts are unavailable.
 try:
     FEATURES, MODELS = load_artifacts()
     METRICS = load_metrics()
@@ -321,6 +342,7 @@ except Exception as exc:
     st.info("Confirm that models/ contains all five .joblib models and model_features.joblib, and that requirements.txt is installed.")
     st.stop()
 
+# Sidebar buttons store the selected view in Streamlit session state.
 with st.sidebar:
     if "page" not in st.session_state:
         st.session_state.page = "Single Property"
@@ -380,9 +402,13 @@ with st.sidebar:
 
 page = st.session_state.page
 
+# LightGBM is the primary estimator because it achieved the strongest overall
+# held-out performance; the other models remain available for comparison.
 primary_metrics = METRICS.loc[METRICS["Model"] == "LightGBM"].iloc[0]
 
 if page == "Single Property":
+    # Derive the county selector from the saved schema to avoid a duplicated,
+    # manually maintained list of one-hot categories.
     county_features = [f.removeprefix("CountyOrParish_") for f in FEATURES if f.startswith("CountyOrParish_")]
     default_county = county_features.index("Los Angeles") if "Los Angeles" in county_features else 0
     with st.form("prediction_form"):
@@ -441,12 +467,15 @@ if page == "Single Property":
                 "DistrictType_Elementary": district_elementary,
                 "DistrictType_High": district_high, "DistrictType_Unified": district_unified,
             }
+            # Encode the form once and send the identical row to all five models.
             feature_row = make_feature_row(values, FEATURES)
             predictions = {
                 name: float(model.predict(feature_row)[0])
                 for name, model in MODELS.items()
             }
             prediction = predictions["LightGBM"]
+            # This MAPE-based range is a descriptive guide, not a calibrated
+            # prediction or confidence interval.
             mape = float(primary_metrics["MAPE (%)"]) / 100
             lo, hi = max(0, prediction * (1 - mape)), prediction * (1 + mape)
             st.markdown(
@@ -485,6 +514,8 @@ if page == "Single Property":
                 st.dataframe(feature_row.T.rename(columns={0: "Value"}), width="stretch")
 
 elif page == "Batch Prediction":
+    # Batch mode intentionally accepts already encoded and scaled features; it
+    # does not attempt to reproduce raw-data preprocessing for arbitrary files.
     st.subheader("Upload an Encoded CSV")
     st.write("The CSV must contain all 127 features defined in `model_features.joblib`. It may also contain `ClosePrice` or identifier columns.")
     template = pd.DataFrame(columns=FEATURES)
@@ -504,6 +535,7 @@ elif page == "Batch Prediction":
             st.error(f"Unable to generate predictions: {exc}")
 
 elif page == "Model Performance":
+    # Present the saved Week 8 test metrics without recomputing model results.
     st.subheader("Held-Out Test-Month Performance")
     st.write("All models were evaluated on the same untouched June 2026 test month.")
 

@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Pandas](https://img.shields.io/badge/Pandas-2.x-green)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
-![Status](https://img.shields.io/badge/Status-Week%208-success)
+![Status](https://img.shields.io/badge/Status-Week%2010-success)
 ![License](https://img.shields.io/badge/Project-Internship-lightgrey)
 
 Machine learning project for predicting California residential property sale prices using **CRMLS real estate transaction data**.
@@ -28,6 +28,7 @@ Current work includes:
 - Model evaluation and performance comparison
 - Saved final-model artifacts with feature-schema validation
 - Evaluation expansion by close-price quintile, residual direction, and APE distribution
+- Streamlit application for single-property estimates, encoded batch prediction, and model-performance review
 
 ## Machine Learning Pipeline
 
@@ -67,6 +68,7 @@ project/
 │   ├── notebook_05_advanced_models.ipynb
 │   └── notebook_06_evaluation.ipynb
 │
+├── app.py                    # Streamlit prediction and model-performance app
 ├── README.md
 ├── requirements.txt
 └── .gitignore
@@ -87,6 +89,12 @@ The single-property form recreates the engineered ratios, interaction features,
 categorical indicators, and training-fitted scaling used by the saved models.
 Batch prediction expects the already encoded 127-feature schema and provides a
 downloadable CSV template in the app.
+
+The app requires all five fitted model files plus `model_features.joblib` under
+`models/`, as well as `data/results/metrics_summary.csv`. Because trained model
+artifacts are intentionally excluded from GitHub, run Notebooks 3-5 locally or
+copy the matching artifacts into `models/` before launching the app on a fresh
+clone.
 
 ---
 
@@ -151,6 +159,9 @@ Price-Band, Residual & APE Distribution Analysis
         │
         ▼
 Metrics Summary Export
+        │
+        ▼
+Streamlit Prediction & Model-Performance App
 ```
 
 ---
@@ -167,8 +178,8 @@ Metrics Summary Export
 | Week 6 | Property & Geographic Feature Engineering | ✅ |
 | Week 7 | Advanced Models (XGBoost and LightGBM), Hyperparameter Tuning, and Final Model Comparison | ✅ |
 | Week 8 | Evaluation Expansion, Price-Band Error Analysis, and Metrics Summary | ✅ |
-| Week 9 | Optional Simple Prediction App (Streamlit) | ⏳ Optional |
-| Week 10 | Documentation and Reproducibility Instructions | ✅ Core documentation complete |
+| Week 9 | Optional Simple Prediction App (Streamlit) | ✅ |
+| Week 10 | Documentation and Reproducibility Instructions | ✅ |
 | Week 11 | Practice Presentation and Slide Draft | ⏳ |
 | Week 12 | Final Presentation and Repository Handoff | ⏳ |
 
@@ -496,7 +507,23 @@ jupyter notebook
 
 Raw CRMLS files are excluded from GitHub, so reproducing the full preprocessing workflow requires access to the source files expected under `data/raw/`. The lightweight processed datasets in `data/cleaned/` can be used to inspect the downstream modeling workflow without publishing the raw source data.
 
-The Streamlit application is an optional Week 9 deliverable and has not yet been implemented. Its launch instructions and `streamlit` dependency will be added if the app is completed.
+## Launching the Streamlit App
+
+After the model artifacts have been created by Notebooks 3-5, return to the
+repository root and run:
+
+```bash
+streamlit run app.py
+```
+
+The app provides three views:
+
+- **Single Property:** converts raw form inputs into the saved 127-feature schema and compares estimates from all five models.
+- **Batch Prediction:** validates an already encoded 127-feature CSV and returns predictions from all five models.
+- **Model Performance:** displays the held-out June 2026 metrics exported by Notebook 6.
+
+The displayed MAPE-based price range is a descriptive reference only; it is not
+a statistical confidence interval or a professional appraisal.
 
 ---
 
@@ -510,19 +537,22 @@ The Streamlit application is an optional Week 9 deliverable and has not yet been
 - Running the preprocessing notebook regenerates the processed datasets.
 - Notebooks 3-5 save the final fitted models and feature schema under `models/` for reuse in evaluation and deployment; these local joblib artifacts are excluded from GitHub.
 - Notebook 6 reloads the saved models and exports the required Week 8 scorecard to `data/results/metrics_summary.csv`.
+- `app.py` reloads those local artifacts for single-property and batch prediction without retraining the models.
 
 ---
 
 # 🚀 Remaining Internship Milestones
 
-- ⏳ **Week 9 (optional):** Build `app.py`, a Streamlit prediction app that loads a saved model and predicts price from LivingArea, Beds, Baths, and LotSize inputs.
-- ✅ **Week 10:** Complete the core README documentation covering the dataset source, preprocessing, models, results, setup, and notebook rerun sequence. Add Streamlit launch instructions only if the optional app is implemented.
+- ✅ **Week 9:** Complete the optional Streamlit application with single-property estimation, encoded batch prediction, and model-performance views.
+- ✅ **Week 10:** Complete the README documentation covering the dataset source, preprocessing, models, results, setup, notebook rerun sequence, and Streamlit launch instructions.
 - ⏳ **Week 11:** Prepare a slide draft covering the data, methods, models, evaluation findings, and an optional Streamlit demonstration, then rehearse the presentation.
 - ⏳ **Week 12:** Deliver the final presentation and complete the repository handoff with the finalized documentation, slides, and any implemented app or demo materials.
 
 Additional model tuning, rolling-origin validation, geographic error analysis, neural-network experiments, and controlled feature-set comparisons are possible technical extensions, but they are not part of the remaining required internship milestones in the current project schedule.
 
-The schedule labels the Week 9 Streamlit app as optional, while the Week 12 handoff description also mentions `app.py` and a live demo. If the optional app is skipped, confirm the expected final demo and handoff scope with the internship supervisor.
+The technical implementation and core documentation are complete. The remaining
+scheduled work is presentation preparation, rehearsal, final delivery, and
+repository handoff.
 
 ---
 
