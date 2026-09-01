@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-orange)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
-![Status](https://img.shields.io/badge/Status-Week%2010-success)
+![Status](https://img.shields.io/badge/Status-Week%2011-success)
 
 Machine learning project for predicting California residential property sale prices using CRMLS transaction data.
 
@@ -242,7 +242,7 @@ data/results/metrics_summary.csv
 | Week 8 | Expanded evaluation and `metrics_summary.csv` | ✅ |
 | Week 9 | Optional Streamlit application | ✅ |
 | Week 10 | Documentation and reproducibility instructions | ✅ |
-| Week 11 | Presentation draft and rehearsal | ⏳ |
+| Week 11 | Presentation draft and rehearsal | ✅ |
 | Week 12 | Final presentation and repository handoff | ⏳ |
 
 The remaining scheduled work is presentation preparation, rehearsal, final delivery, and repository handoff.
