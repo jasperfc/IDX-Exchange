@@ -216,10 +216,13 @@ Launch the application from the repository root:
 streamlit run app.py
 ```
 
-The app also requires:
+The app also requires these exported evaluation summaries:
 
 ```text
 data/results/metrics_summary.csv
+data/results/price_band_summary.csv
+data/results/ape_distribution_summary.csv
+data/results/lightgbm_error_buckets.csv
 ```
 
 ---

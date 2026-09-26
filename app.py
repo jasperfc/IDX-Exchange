@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 from datetime import date
 from pathlib import Path
 
@@ -14,6 +15,9 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent
 MODEL_DIR = ROOT / "models"
 METRICS_PATH = ROOT / "data" / "results" / "metrics_summary.csv"
+PRICE_BAND_PATH = ROOT / "data" / "results" / "price_band_summary.csv"
+APE_DISTRIBUTION_PATH = ROOT / "data" / "results" / "ape_distribution_summary.csv"
+ERROR_BUCKETS_PATH = ROOT / "data" / "results" / "lightgbm_error_buckets.csv"
 
 # Keep user-facing model names separate from their local artifact filenames.
 MODEL_FILES = {
@@ -60,6 +64,23 @@ def load_artifacts() -> tuple[list[str], dict[str, object]]:
 def load_metrics() -> pd.DataFrame:
     """Load the held-out test metrics used by the performance page."""
     return pd.read_csv(METRICS_PATH)
+
+
+@st.cache_data
+def load_segment_analysis() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Load the Week 8 price-band and error-distribution summaries."""
+    return (
+        pd.read_csv(PRICE_BAND_PATH),
+        pd.read_csv(APE_DISTRIBUTION_PATH),
+        pd.read_csv(ERROR_BUCKETS_PATH),
+    )
+
+
+@st.cache_data
+def load_hero_data_url() -> str:
+    """Return an optimized project image as an embeddable CSS data URL."""
+    encoded = base64.b64encode((ROOT / "assets" / "california-home-hero.jpg").read_bytes()).decode("ascii")
+    return f"data:image/jpeg;base64,{encoded}"
 
 
 def safe_ratio(numerator: float, denominator: float) -> float:
@@ -169,31 +190,182 @@ def validate_encoded_frame(frame: pd.DataFrame, features: list[str]) -> pd.DataF
 
 
 # Configure the page before rendering any Streamlit elements.
-st.set_page_config(page_title="California Home Price Estimator", page_icon="🏠", layout="wide")
+st.set_page_config(page_title="California Home Intelligence", layout="wide")
 
-# Apply the project-specific prediction card and sidebar theme.
+# Apply a compact editorial design system across the public product pages.
 st.markdown(
     """
     <style>
+    :root {
+        --ink: #14231d;
+        --muted: #617169;
+        --forest: #123d2f;
+        --sage: #ddefe6;
+        --paper: #f7f8f4;
+        --line: #d9e1dc;
+    }
+    .stApp { background: var(--paper); color: var(--ink); }
+    [data-testid="stHeader"], .stApp > header { display: none !important; }
+    [data-testid="stToolbar"], [data-testid="stDecoration"] { display: none; }
+    .block-container {
+        max-width: 1180px;
+        padding-top: 1.25rem;
+        padding-bottom: 3rem;
+    }
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.025em;
+    }
+    p, label, [data-testid="stCaptionContainer"] { color: var(--muted); }
+    .site-header {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        min-height: 3.4rem;
+    }
+    .brand-mark {
+        display: flex;
+        width: 2.45rem;
+        height: 2.45rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--forest);
+        color: white;
+        font-family: Georgia, serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+    }
+    .brand-name { color: var(--ink) !important; font-size: 0.98rem; font-weight: 750; }
+    .brand-subtitle { color: var(--muted) !important; font-size: 0.72rem; }
+    [data-testid="stSegmentedControl"], [data-testid="stButtonGroup"] div[role="radiogroup"] {
+        justify-content: flex-end;
+        gap: 0.25rem;
+    }
+    [data-testid="stSegmentedControl"] button,
+    [data-testid="stButtonGroup"] button,
+    button[role="radio"] {
+        min-height: 2.45rem;
+        border: 0 !important;
+        border-bottom: 2px solid transparent !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: var(--muted) !important;
+        font-size: 0.86rem;
+    }
+    [data-testid="stSegmentedControl"] button[aria-pressed="true"],
+    [data-testid="stButtonGroup"] button[aria-checked="true"],
+    button[role="radio"][aria-checked="true"] {
+        border-bottom-color: var(--forest) !important;
+        background: transparent !important;
+        color: var(--forest) !important;
+        font-weight: 750;
+    }
+    .top-rule { margin: 0.35rem 0 0; border-top: 1px solid var(--line); }
+    .eyebrow {
+        margin-bottom: 1rem;
+        color: #356651;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+    .hero { padding: 4rem 0 3.5rem; }
+    .hero h1 {
+        max-width: 800px;
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif !important;
+        font-weight: 600 !important;
+        font-size: clamp(3rem, 5.2vw, 4.7rem);
+        line-height: 0.98;
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
+    }
+    .hero-copy {
+        max-width: 680px;
+        margin-top: 1.6rem;
+        color: var(--muted);
+        font-size: 1.14rem;
+        line-height: 1.75;
+    }
+    .st-key-home_hero {
+        min-height: 38rem;
+        margin: 2.5rem 0 3rem;
+        padding: 2.25rem;
+        border-radius: 20px;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
+    }
+    .st-key-home_hero [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:first-child {
+        padding: 0 2.25rem 2.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 16px;
+        background: rgba(247, 248, 244, 0.92);
+        backdrop-filter: blur(4px);
+    }
+    .st-key-home_hero .hero {
+        padding: 3rem 0 2rem;
+    }
+    .section { padding: 4rem 0; border-top: 1px solid var(--line); }
+    .section h2 { max-width: 760px; margin: 0 0 1rem; font-size: 2.7rem; line-height: 1.08; }
+    .evidence-strip {
+        display: grid;
+        grid-template-columns: 1.2fr repeat(3, 1fr);
+        margin: 0 0 4rem;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: white;
+        overflow: hidden;
+    }
+    .evidence-item { min-height: 8.5rem; padding: 1.45rem; border-right: 1px solid var(--line); }
+    .evidence-item:last-child { border-right: 0; }
+    .evidence-label { color: var(--muted); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .evidence-value { margin-top: 0.55rem; color: var(--ink); font-family: Georgia, serif; font-size: 2rem; line-height: 1.05; }
+    .evidence-note { margin-top: 0.4rem; color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+    .feature-card {
+        min-height: 13.5rem;
+        padding: 1.65rem;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: white;
+    }
+    .feature-number { color: #47745f; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; }
+    .feature-card h3 { margin: 1.2rem 0 0.75rem; font-size: 1.55rem; }
+    .feature-card p { font-size: 0.92rem; line-height: 1.65; }
+    .page-intro { max-width: 820px; padding: 4.25rem 0 2.5rem; }
+    .page-intro h1 { margin: 0; font-size: clamp(2.7rem, 5vw, 4.7rem); line-height: 1; }
+    .page-intro p { max-width: 680px; margin-top: 1.25rem; font-size: 1.05rem; line-height: 1.7; }
+    [data-testid="stForm"] {
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: white;
+    }
+    [data-testid="stForm"] h3 { margin-top: 0.4rem; font-family: inherit; font-size: 1.1rem; letter-spacing: 0; }
+    [data-testid="stExpander"] { border-color: var(--line); background: #fbfcfa; }
     .prediction-card {
-        margin: 1.25rem 0 0.75rem;
-        padding: 2rem 2.25rem;
-        border: 1px solid rgba(38, 102, 79, 0.25);
-        border-radius: 18px;
-        background: linear-gradient(135deg, #f4fbf7 0%, #e8f5ee 100%);
-        box-shadow: 0 10px 28px rgba(31, 82, 63, 0.10);
-        text-align: center;
+        margin: 1.6rem 0 1rem;
+        padding: 2.4rem;
+        border: 1px solid #b8cfc3;
+        border-radius: 16px;
+        background: var(--sage);
+        text-align: left;
     }
     .prediction-label {
-        margin-bottom: 0.35rem;
-        color: #4b6d60;
+        color: #416655;
         font-size: 0.9rem;
         font-weight: 700;
         letter-spacing: 0.09em;
         text-transform: uppercase;
     }
     .prediction-value {
-        color: #123d2f;
+        margin-top: 0.45rem;
+        color: var(--forest);
         font-size: clamp(2.75rem, 5vw, 4.75rem);
         font-weight: 800;
         line-height: 1.05;
@@ -201,218 +373,216 @@ st.markdown(
     }
     .prediction-meta {
         margin-top: 0.65rem;
-        color: #577468;
+        color: #4c695c;
         font-size: 0.95rem;
     }
-    section[data-testid="stSidebar"] {
-        background: #123d2f;
-        border-right: 0;
-    }
-    section[data-testid="stSidebar"] > div {
-        padding-top: 1.75rem;
-    }
-    section[data-testid="stSidebar"] .stMarkdown {
-        color: #ffffff;
-    }
-    section[data-testid="stSidebar"] button[kind="secondary"] {
-        min-height: 2.8rem;
-        padding: 0.65rem 0.85rem;
-        border: 0;
-        border-left: 3px solid transparent;
-        border-radius: 8px;
-        background: transparent;
-        color: #d9e7e1;
-        font-weight: 500;
-        text-align: left;
-        justify-content: flex-start;
-        transition: background-color 120ms ease, color 120ms ease;
-    }
-    section[data-testid="stSidebar"] button[kind="secondary"]:hover {
-        border-color: transparent;
-        background: rgba(255, 255, 255, 0.08);
-        color: #ffffff;
-    }
-    section[data-testid="stSidebar"] button[kind="primary"] {
-        min-height: 2.8rem;
-        padding: 0.65rem 0.85rem;
-        border: 0;
-        border-left-color: #88c7aa;
-        border-left-style: solid;
-        border-left-width: 3px;
-        border-radius: 8px;
-        background: #ddefe6;
-        color: #123d2f;
-        font-weight: 700;
-        text-align: left;
-        justify-content: flex-start;
-    }
-    section[data-testid="stSidebar"] button[kind="primary"]:hover {
-        border-color: #88c7aa;
-        background: #e8f5ee;
-        color: #123d2f;
-    }
-    .sidebar-brand {
-        margin: 0 0 2.1rem;
-    }
-    .sidebar-brand-mark {
-        margin-bottom: 0.8rem;
-        font-size: 2rem;
-        line-height: 1;
-    }
-    .sidebar-brand-name {
-        color: #ffffff;
-        font-size: 1.03rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        line-height: 1.35;
-    }
-    .sidebar-brand-subtitle {
-        margin-top: 0.2rem;
-        color: #a9c3b8;
+    .site-footer {
+        margin-top: 5rem;
+        padding: 1.7rem 0 0.5rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
         font-size: 0.78rem;
-        letter-spacing: 0.05em;
+        line-height: 1.6;
     }
-    .sidebar-section-label {
-        margin: 1.15rem 0 0.45rem 0.2rem;
-        color: #88a99c;
-        font-size: 0.68rem;
+    .site-footer strong { color: var(--ink); }
+    .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"],
+    [data-testid="stFormSubmitButton"] button {
+        min-height: 3rem;
+        border: 1px solid var(--forest);
+        border-radius: 9px;
+        background: var(--forest);
+        color: white;
         font-weight: 700;
-        letter-spacing: 0.13em;
     }
-    .sidebar-footer {
-        margin-top: 2.4rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.14);
-        color: #88a99c;
-        font-size: 0.72rem;
-        line-height: 1.5;
+    .stButton > button[kind="primary"] p,
+    .stDownloadButton > button[kind="primary"] p,
+    [data-testid="stFormSubmitButton"] button p {
+        color: white !important;
     }
-    .sidebar-author {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.14);
+    button[kind="primary"] * { color: white !important; }
+    @media (max-width: 900px) {
+        .st-key-home_hero { min-height: 34rem; padding: 1rem; background-position: 64% center; }
+        .st-key-home_hero [data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+        .st-key-home_hero [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:first-child {
+            min-width: 100% !important;
+            flex: 1 1 100% !important;
+            padding: 0 1.25rem 1.5rem;
+        }
+        .st-key-home_hero [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:last-child { display: none; }
     }
-    .sidebar-author-avatar {
-        display: flex;
-        flex: 0 0 2rem;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        background: #ddefe6;
-        color: #123d2f;
-        font-size: 0.72rem;
-        font-weight: 800;
-    }
-    .sidebar-author-label {
-        color: #88a99c;
-        font-size: 0.62rem;
-        font-weight: 700;
-        letter-spacing: 0.11em;
-    }
-    .sidebar-author-name {
-        margin-top: 0.08rem;
-        color: #ffffff;
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-    .sidebar-author-detail {
-        margin-top: 0.3rem;
-        color: #a9c3b8;
-        font-size: 0.67rem;
-        line-height: 1.45;
+    @media (max-width: 760px) {
+        .block-container { padding: 0.8rem 1rem 2rem; }
+        .site-header { min-height: 2.8rem; }
+        .hero { padding: 3rem 0 2.25rem; }
+        .hero h1 { font-size: 2.8rem; }
+        .evidence-strip { grid-template-columns: 1fr 1fr; }
+        .evidence-item { border-bottom: 1px solid var(--line); }
+        .page-intro { padding-top: 3rem; }
+        [data-testid="stSegmentedControl"], [data-testid="stButtonGroup"] div[role="radiogroup"] {
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        [data-testid="stSegmentedControl"] button,
+        [data-testid="stButtonGroup"] button,
+        button[role="radio"] {
+            flex: 1 1 calc(50% - 0.25rem);
+            padding: 0.4rem 0.48rem;
+            font-size: 0.76rem;
+        }
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
-st.title("🏠 California Home Price Estimator")
-st.caption("A home-price estimation tool trained on historical CRMLS sales data | California residential properties only")
 
 # Stop with an actionable message when local model artifacts are unavailable.
 try:
     FEATURES, MODELS = load_artifacts()
     METRICS = load_metrics()
+    PRICE_BANDS, APE_DISTRIBUTION, ERROR_BUCKETS = load_segment_analysis()
 except Exception as exc:
     st.error(f"Failed to load model artifacts: {exc}")
     st.info("Confirm that models/ contains all five .joblib models and model_features.joblib, and that requirements.txt is installed.")
     st.stop()
 
-# Sidebar buttons store the selected view in Streamlit session state.
-with st.sidebar:
-    if "page" not in st.session_state:
-        st.session_state.page = "Single Property"
+# A compact top navigation makes the app read like a public product rather than
+# an internal dashboard while preserving Streamlit's rerun-safe state model.
+def navigate_to(page_name: str) -> None:
+    """Update the navigation widget from a callback before widgets render."""
+    st.session_state["page"] = page_name
 
+
+if "page" not in st.session_state:
+    st.session_state["page"] = "Home"
+
+
+brand_col, nav_col = st.columns([1.05, 2.1], vertical_alignment="center")
+with brand_col:
     st.markdown(
         """
-        <div class="sidebar-brand">
-            <div class="sidebar-brand-mark">⌂</div>
-            <div class="sidebar-brand-name">HOME PRICE<br>ESTIMATOR</div>
-            <div class="sidebar-brand-subtitle">CALIFORNIA AVM</div>
+        <div class="site-header">
+            <div class="brand-mark">CHI</div>
+            <div>
+                <div class="brand-name">California Home Intelligence</div>
+                <div class="brand-subtitle">Residential price review</div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.markdown('<div class="sidebar-section-label">PREDICTION</div>', unsafe_allow_html=True)
+with nav_col:
+    page = st.segmented_control(
+        "Primary navigation",
+        ["Home", "Estimate", "Model Insights", "Analyst Tools"],
+        required=True,
+        label_visibility="collapsed",
+        key="page",
+        width="stretch",
+    )
+st.markdown('<div class="top-rule"></div>', unsafe_allow_html=True)
 
-    if st.button(
-        "⌂   Single Property", key="nav_single", width="stretch",
-        type="primary" if st.session_state.page == "Single Property" else "secondary",
-    ):
-        st.session_state.page = "Single Property"
-        st.rerun()
+# LightGBM is the primary estimator because it achieved the strongest overall
+# held-out performance; the other models remain available for comparison.
+primary_metrics = METRICS.loc[METRICS["Model"] == "LightGBM"].iloc[0]
 
-    if st.button(
-        "▤   Batch Prediction", key="nav_batch", width="stretch",
-        type="primary" if st.session_state.page == "Batch Prediction" else "secondary",
-    ):
-        st.session_state.page = "Batch Prediction"
-        st.rerun()
-
-    st.markdown('<div class="sidebar-section-label">ANALYSIS</div>', unsafe_allow_html=True)
-    if st.button(
-        "▥   Model Performance", key="nav_performance", width="stretch",
-        type="primary" if st.session_state.page == "Model Performance" else "secondary",
-    ):
-        st.session_state.page = "Model Performance"
-        st.rerun()
+if page == "Home":
+    hero_data_url = load_hero_data_url()
+    st.markdown(
+        f'<style>.st-key-home_hero {{ background-image: url("{hero_data_url}"); }}</style>',
+        unsafe_allow_html=True,
+    )
+    with st.container(key="home_hero"):
+        hero_copy, hero_space = st.columns([1.08, 0.92], gap="large", vertical_alignment="center")
+        with hero_copy:
+            st.markdown(
+                """
+                <section class="hero">
+                    <div class="eyebrow">California homes · evidence-led pricing</div>
+                    <h1>See the value.<br>Know the risk.</h1>
+                    <p class="hero-copy">
+                        A practical decision-support tool for reviewing California home values,
+                        comparing model estimates, and recognizing when professional judgment matters.
+                    </p>
+                </section>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.button(
+                "Start a property estimate",
+                type="primary",
+                key="home_cta",
+                on_click=navigate_to,
+                args=("Estimate",),
+            )
 
     st.markdown(
         """
-        <div class="sidebar-footer">CRMLS · CALIFORNIA<br>Educational AVM prototype</div>
-        <div class="sidebar-author">
-            <div class="sidebar-author-avatar">JF</div>
-            <div>
-                <div class="sidebar-author-label">AUTHOR</div>
-                <div class="sidebar-author-name">Jasper Fan-Chiang</div>
-                <div class="sidebar-author-detail">
-                    M.S. in Applied Data Science<br>
-                    University of Southern California<br><br>
-                    IDX Exchange — Data Science Internship
-                </div>
+        <div class="evidence-strip">
+            <div class="evidence-item">
+                <div class="evidence-label">Held-out evidence</div>
+                <div class="evidence-value">June 2026</div>
+                <div class="evidence-note">Untouched test month used for model comparison.</div>
+            </div>
+            <div class="evidence-item">
+                <div class="evidence-label">Primary model</div>
+                <div class="evidence-value">LightGBM</div>
+                <div class="evidence-note">Selected for the strongest overall test performance.</div>
+            </div>
+            <div class="evidence-item">
+                <div class="evidence-label">Explained variance</div>
+                <div class="evidence-value">0.906 R²</div>
+                <div class="evidence-note">Approximately 91% of observed price variation.</div>
+            </div>
+            <div class="evidence-item">
+                <div class="evidence-label">Typical percentage miss</div>
+                <div class="evidence-value">8.3%</div>
+                <div class="evidence-note">LightGBM median absolute percentage error.</div>
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-page = st.session_state.page
+    st.markdown(
+        """
+        <section class="section">
+            <div class="eyebrow">What the product supports</div>
+            <h2>One estimate, three better-informed decisions.</h2>
+            <p class="hero-copy">The model is a review signal—not an automated appraisal. It is most useful when paired with local context and comparable-sale judgment.</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+    c1, c2, c3 = st.columns(3)
+    cards = [
+        (c1, "01 · PRICE REVIEW", "Challenge a proposed price", "Compare the primary estimate with a listing or expected sale price and decide whether deeper comparable-sale review is justified."),
+        (c2, "02 · CONSENSUS", "Compare five models", "See whether independent model families agree. A wide spread is a clear signal to interpret the estimate with additional caution."),
+        (c3, "03 · RISK", "Route unusual properties", "Recognize the limits of an educational AVM and send luxury, highly unusual, or out-of-distribution homes to professional review."),
+    ]
+    for column, number, title, copy in cards:
+        with column:
+            st.markdown(
+                f'<div class="feature-card"><div class="feature-number">{number}</div><h3>{title}</h3><p>{copy}</p></div>',
+                unsafe_allow_html=True,
+            )
 
-# LightGBM is the primary estimator because it achieved the strongest overall
-# held-out performance; the other models remain available for comparison.
-primary_metrics = METRICS.loc[METRICS["Model"] == "LightGBM"].iloc[0]
-
-if page == "Single Property":
+elif page == "Estimate":
+    st.markdown(
+        """
+        <div class="page-intro">
+            <div class="eyebrow">Single-property review</div>
+            <h1>A practical price check, grounded in property details.</h1>
+            <p>Start with the essential facts. Additional location, HOA, construction, and amenity fields are available when you need a more complete estimate.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     # Derive the county selector from the saved schema to avoid a duplicated,
     # manually maintained list of one-hot categories.
     county_features = [f.removeprefix("CountyOrParish_") for f in FEATURES if f.startswith("CountyOrParish_")]
     default_county = county_features.index("Los Angeles") if "Los Angeles" in county_features else 0
     with st.form("prediction_form"):
-        st.subheader("Property Details")
+        st.subheader("Essential property details")
         c1, c2, c3, c4 = st.columns(4)
         living_area = c1.number_input("Living area (sq ft)", 100.0, 50000.0, 1800.0, 50.0)
         lot_size = c2.number_input("Lot size (sq ft)", 100.0, 10000000.0, 7200.0, 100.0)
@@ -420,31 +590,32 @@ if page == "Single Property":
         bathrooms = c4.number_input("Bathrooms", 0, 30, 2)
         c1, c2, c3, c4 = st.columns(4)
         year_built = c1.number_input("Year built", 1800, date.today().year + 2, 1976)
-        garage = c2.number_input("Garage spaces", 0.0, 20.0, 2.0, 1.0)
-        parking = c3.number_input("Total parking", 0.0, 50.0, 2.0, 1.0)
+        county = c2.selectbox("County", county_features, default_county)
+        garage = c3.number_input("Garage spaces", 0.0, 20.0, 2.0, 1.0)
         stories = c4.number_input("Stories", 0.0, 20.0, 1.0, 0.5)
 
-        st.subheader("Location and Transaction Details")
-        c1, c2, c3, c4 = st.columns(4)
-        county = c1.selectbox("County", county_features, default_county)
-        latitude = c2.number_input("Latitude", 32.0, 42.5, 34.104689, format="%.6f")
-        longitude = c3.number_input("Longitude", -125.0, -113.0, -118.075548, format="%.6f")
-        close_date = c4.date_input("Valuation / close date", date(2026, 6, 15))
-        c1, c2, c3, c4 = st.columns(4)
-        hoa_fee = c1.number_input("HOA fee", 0.0, 100000.0, 0.0, 25.0)
-        hoa_frequency = c2.selectbox("HOA frequency", ["None", "Monthly", "Quarterly", "SemiAnnually", "Annually"])
-        levels = c3.selectbox("Levels", LEVEL_OPTIONS, index=1)
-        main_bedrooms = c4.number_input("Main-level bedrooms", 0.0, 30.0, float(min(bedrooms, 3)), 1.0)
-
-        st.subheader("Features and Amenities")
-        flooring = st.multiselect("Flooring", FLOORING_OPTIONS, default=["Unknown"])
-        amenity_cols = st.columns(7)
-        labels = ["View", "Waterfront", "Basement", "Private pool", "Attached garage", "Fireplace", "New construction"]
-        amenity_values = [col.checkbox(label) for col, label in zip(amenity_cols, labels)]
-        d1, d2, d3 = st.columns(3)
-        district_elementary = d1.checkbox("Elementary district match")
-        district_high = d2.checkbox("High-school district match")
-        district_unified = d3.checkbox("Unified district match", value=True)
+        with st.expander("Additional details", expanded=False):
+            st.caption("Use these fields when the information is available. The defaults represent a typical starting point for this prototype.")
+            c1, c2, c3 = st.columns(3)
+            latitude = c1.number_input("Latitude", 32.0, 42.5, 34.104689, format="%.6f", help="Geographic latitude of the property.")
+            longitude = c2.number_input("Longitude", -125.0, -113.0, -118.075548, format="%.6f", help="Geographic longitude of the property.")
+            close_date = c3.date_input("Valuation date", date(2026, 6, 15))
+            c1, c2, c3, c4 = st.columns(4)
+            parking = c1.number_input("Total parking", 0.0, 50.0, 2.0, 1.0)
+            hoa_fee = c2.number_input("HOA fee", 0.0, 100000.0, 0.0, 25.0)
+            hoa_frequency = c3.selectbox("HOA frequency", ["None", "Monthly", "Quarterly", "SemiAnnually", "Annually"])
+            levels = c4.selectbox("Home levels", LEVEL_OPTIONS, index=1)
+            main_bedrooms = st.number_input("Main-level bedrooms", 0.0, 30.0, float(min(bedrooms, 3)), 1.0)
+            flooring = st.multiselect("Flooring", FLOORING_OPTIONS, default=["Unknown"])
+            st.markdown("**Features and amenities**")
+            amenity_cols = st.columns(4)
+            labels = ["View", "Waterfront", "Basement", "Private pool", "Attached garage", "Fireplace", "New construction"]
+            amenity_values = [amenity_cols[index % 4].checkbox(label) for index, label in enumerate(labels)]
+            st.markdown("**School district indicators**")
+            d1, d2, d3 = st.columns(3)
+            district_elementary = d1.checkbox("Elementary district")
+            district_high = d2.checkbox("High-school district")
+            district_unified = d3.checkbox("Unified district", value=True)
         submitted = st.form_submit_button("Estimate Home Price", type="primary", width="stretch")
 
     if submitted:
@@ -505,38 +676,90 @@ if page == "Single Property":
             comparison["Difference vs. LightGBM"] = comparison["Difference vs. LightGBM"].map(
                 lambda value: "—" if abs(value) < 1e-12 else f"{value:+.1%}"
             )
-            with st.expander("Compare All Model Estimates", expanded=True):
+            r1, r2, r3 = st.columns(3)
+            r1.metric("Reference low", f"${lo:,.0f}")
+            r2.metric("Reference high", f"${hi:,.0f}")
+            r3.metric("Model agreement", "Lower" if spread > 0.25 else "Higher", help="Based on the spread across all five model estimates.")
+            st.markdown("#### How to read this result")
+            if spread > 0.25:
+                st.warning("The five models disagree substantially for this property. Treat the estimate as a review signal and prioritize comparable-sale or professional appraisal evidence.")
+            else:
+                st.info("The five models show relatively close agreement for this property. The estimate is still a decision-support signal, not a professional appraisal.")
+            with st.expander("Technical model comparison", expanded=False):
                 st.dataframe(comparison, hide_index=True, width="stretch")
                 st.caption(f"Median estimate across all models: ${median_prediction:,.0f}")
-                if spread > 0.25:
-                    st.warning("Model predictions vary substantially for this property. Treat the estimate with additional caution.")
-            with st.expander("View the 127 features submitted to the model"):
+            with st.expander("View the 127 encoded model features"):
                 st.dataframe(feature_row.T.rename(columns={0: "Value"}), width="stretch")
 
-elif page == "Batch Prediction":
-    # Batch mode intentionally accepts already encoded and scaled features; it
-    # does not attempt to reproduce raw-data preprocessing for arbitrary files.
-    st.subheader("Upload an Encoded CSV")
-    st.write("The CSV must contain all 127 features defined in `model_features.joblib`. It may also contain `ClosePrice` or identifier columns.")
+elif page == "Analyst Tools":
+    st.markdown(
+        """
+        <div class="page-intro">
+            <div class="eyebrow">Analyst workflow</div>
+            <h1>Run the saved models across an encoded portfolio.</h1>
+            <p>This technical workflow expects the same 127-feature schema used during training. It is intended for analysts, not general property CSV uploads.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown("### Step 1 · Prepare the encoded file")
+    st.write("Download the schema or a one-row example. This workflow does not accept a standard listing export: every model feature must already be encoded and scaled.")
     template = pd.DataFrame(columns=FEATURES)
-    st.download_button("Download Feature Template", template.to_csv(index=False), "prediction_template.csv", "text/csv")
-    upload = st.file_uploader("Choose a CSV file", type="csv")
+    analyst_counties = [f.removeprefix("CountyOrParish_") for f in FEATURES if f.startswith("CountyOrParish_")]
+    example_values = {
+        "LivingArea": 1800.0, "LotSizeSquareFeet": 7200.0, "LotSizeArea": 7200.0,
+        "BedroomsTotal": 3, "BathroomsTotalInteger": 2, "YearBuilt": 1976,
+        "GarageSpaces": 2.0, "ParkingTotal": 2.0, "Stories": 1.0,
+        "MainLevelBedrooms": 3.0, "CountyOrParish": "Los Angeles" if "Los Angeles" in analyst_counties else analyst_counties[0],
+        "Latitude": 34.104689, "Longitude": -118.075548, "CloseDate": date(2026, 6, 15),
+        "AssociationFee": 0.0, "AssociationFeeFrequency": "None", "Levels": "One",
+        "Flooring": ["Unknown"], "ViewYN": False, "WaterfrontYN": False,
+        "BasementYN": False, "PoolPrivateYN": False, "AttachedGarageYN": True,
+        "FireplaceYN": False, "NewConstructionYN": False, "AmenityCount": 1,
+        "DistrictType_Elementary": False, "DistrictType_High": False,
+        "DistrictType_Unified": True,
+    }
+    example = make_feature_row(example_values, FEATURES)
+    d1, d2 = st.columns(2)
+    d1.download_button("Download empty schema", template.to_csv(index=False), "prediction_template.csv", "text/csv", width="stretch")
+    d2.download_button("Download encoded example", example.to_csv(index=False), "encoded_example.csv", "text/csv", width="stretch")
+
+    st.markdown("### Step 2 · Validate and run predictions")
+    upload = st.file_uploader("Upload the encoded CSV", type="csv", help="The file must include all 127 saved model features. Identifier and ClosePrice columns are allowed.")
     if upload is not None:
         try:
             uploaded = pd.read_csv(upload)
             encoded = validate_encoded_frame(uploaded, FEATURES)
+            extra_columns = [column for column in uploaded.columns if column not in FEATURES]
+            v1, v2, v3 = st.columns(3)
+            v1.metric("Rows ready", f"{len(encoded):,}")
+            v2.metric("Required features", f"{len(FEATURES)} / {len(FEATURES)}")
+            v3.metric("Extra columns retained", f"{len(extra_columns)}")
+            st.success("Schema validation passed. All required features are numeric and ready for prediction.")
             output = uploaded.copy()
             for name, model in MODELS.items():
                 output[f"PredictedPrice_{name.replace(' ', '')}"] = model.predict(encoded)
+            st.markdown("### Step 3 · Review and export")
             st.success(f"Completed five-model predictions for {len(output):,} records.")
             st.dataframe(output.head(100), width="stretch")
             st.download_button("Download Prediction Results", output.to_csv(index=False), "home_price_predictions.csv", "text/csv", type="primary")
         except Exception as exc:
             st.error(f"Unable to generate predictions: {exc}")
 
-elif page == "Model Performance":
+elif page == "Model Insights":
+    st.markdown(
+        """
+        <div class="page-intro">
+            <div class="eyebrow">Trust and method</div>
+            <h1>Performance evidence, with the limits kept visible.</h1>
+            <p>All five models were compared on the same untouched June 2026 test month.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     # Present the saved Week 8 test metrics without recomputing model results.
-    st.subheader("Held-Out Test-Month Performance")
+    st.info("LightGBM is the primary model because it explains approximately 91% of observed price variation and produced the lowest overall dollar error on the held-out test month.")
+    st.subheader("Overall Model Comparison")
     st.write("All models were evaluated on the same untouched June 2026 test month.")
 
     best_r2 = METRICS.loc[METRICS["R²"].idxmax()]
@@ -572,6 +795,107 @@ elif page == "Model Performance":
         percentage_errors = METRICS.set_index("Model")[["MAPE (%)", "MdAPE (%)"]]
         st.bar_chart(percentage_errors, color=["#466b9c", "#9aafd0"])
 
+    st.markdown("---")
+    st.subheader("Error Distribution")
+    st.write(
+        "A single average can hide the shape of model error. These views separate the typical property "
+        "from the upper tail of harder-to-predict homes."
+    )
+
+    lightgbm_distribution = APE_DISTRIBUTION.loc[
+        APE_DISTRIBUTION["Model"] == "LightGBM"
+    ].iloc[0]
+    within_ten = float(ERROR_BUCKETS.loc[
+        ERROR_BUCKETS["Error Bucket"].isin(["Under 5%", "5–10%"]), "Share (%)"
+    ].sum())
+    within_twenty = float(ERROR_BUCKETS.loc[
+        ERROR_BUCKETS["Error Bucket"].isin(["Under 5%", "5–10%", "10–20%"]), "Share (%)"
+    ].sum())
+    e1, e2, e3 = st.columns(3)
+    e1.metric("Within 10%", f"{within_ten:.1f}%", "of test homes")
+    e2.metric("Within 20%", f"{within_twenty:.1f}%", "of test homes")
+    e3.metric("LightGBM P95 error", f"{lightgbm_distribution['P95 (%)']:.1f}%", "lowest of five models")
+
+    distribution_left, distribution_right = st.columns([1.05, 1])
+    with distribution_left:
+        st.markdown("#### LightGBM Error Buckets")
+        st.caption("Share of June 2026 homes by absolute percentage error.")
+        error_bucket_chart = ERROR_BUCKETS.set_index("Error Bucket")[["Share (%)"]]
+        st.bar_chart(error_bucket_chart, color="#3b8c6e")
+    with distribution_right:
+        st.markdown("#### Typical vs. Tail Error")
+        st.caption("P90 and P95 show the error level below which 90% and 95% of homes fall.")
+        tail_chart = APE_DISTRIBUTION.set_index("Model")[["Median (%)", "P90 (%)", "P95 (%)"]]
+        st.bar_chart(tail_chart, color=["#9bbbad", "#6688a8", "#264f73"])
+
+    st.info(
+        "LightGBM keeps 83.3% of test predictions within 20% of the actual close price and has the "
+        "lowest P90 and P95 error. Random Forest still has the slightly lower median error, so the "
+        "primary-model choice reflects stronger overall fit and better control of severe misses—not a win on every metric."
+    )
+
+    st.markdown("---")
+    st.subheader("Performance by Price Band")
+    st.write(
+        "To test how well each model distinguishes lower- and higher-value homes, the June 2026 test "
+        "set is divided into five equal-frequency bands using actual close price."
+    )
+
+    band_order = ["Q1 - Lowest", "Q2 - Low", "Q3 - Middle", "Q4 - High", "Q5 - Highest"]
+    nonlinear_models = ["Decision Tree", "Random Forest", "XGBoost", "LightGBM"]
+    band_mdape = (
+        PRICE_BANDS.loc[PRICE_BANDS["Model"].isin(nonlinear_models)]
+        .pivot(index="Price Band", columns="Model", values="MdAPE (%)")
+        .reindex(band_order)[nonlinear_models]
+    )
+    st.markdown("#### Median Percentage Error by Actual Price Quintile")
+    st.caption("Lower is better. Linear Regression is omitted here so its much larger error does not flatten the differences among the four non-linear models.")
+    st.line_chart(
+        band_mdape,
+        color=["#b89a68", "#6e927f", "#5379a1", "#123d2f"],
+    )
+
+    lightgbm_bands = (
+        PRICE_BANDS.loc[PRICE_BANDS["Model"] == "LightGBM"]
+        .set_index("Price Band")
+        .reindex(band_order)
+    )
+    band_left, band_right = st.columns([1.05, 1])
+    with band_left:
+        st.markdown("#### LightGBM Median Residual")
+        st.caption("Actual minus predicted. Positive values mean underprediction; negative values mean overprediction.")
+        st.bar_chart(lightgbm_bands[["Median Residual ($)"]], color="#466b9c")
+    with band_right:
+        st.markdown("#### Test-Month Band Boundaries")
+        band_table = lightgbm_bands.reset_index()[
+            ["Price Band", "Count", "Min Actual", "Median Actual", "Max Actual"]
+        ].copy()
+        for column in ["Min Actual", "Median Actual", "Max Actual"]:
+            band_table[column] = band_table[column].map(lambda value: f"${value:,.0f}")
+        band_table = band_table.rename(columns={
+            "Count": "Homes",
+            "Min Actual": "From",
+            "Median Actual": "Median",
+            "Max Actual": "To",
+        })
+        st.dataframe(band_table, hide_index=True, width="stretch")
+
+    takeaway_1, takeaway_2, takeaway_3 = st.columns(3)
+    with takeaway_1:
+        st.markdown("#### Lower price bands")
+        st.write("Random Forest records the lowest median percentage error in Q1–Q3, with its best result in Q2 at 5.7%.")
+    with takeaway_2:
+        st.markdown("#### Upper-middle band")
+        st.write("XGBoost narrowly leads Q4 at 8.7% MdAPE; LightGBM follows closely at 8.9%.")
+    with takeaway_3:
+        st.markdown("#### Highest price band")
+        st.write("LightGBM leads Q5 at 10.9% MdAPE, but its positive USD 106,676 median residual shows systematic underprediction.")
+
+    st.warning(
+        "Price-band boundaries are specific to this June 2026 test month, not permanent business thresholds. "
+        "The USD 1.65M–8.20M highest band remains the clearest review zone: use comparable-sale evidence or a professional appraisal before relying on an automated estimate."
+    )
+
     st.markdown("#### Accuracy–Error Trade-Off")
     st.caption("Models closest to the upper-left combine higher explained variance with lower absolute error.")
     tradeoff = METRICS.rename(columns={"R²": "Test R²", "MAE": "MAE ($)"}).copy()
@@ -585,5 +909,13 @@ elif page == "Model Performance":
 
     st.info("LightGBM leads on R², MAE, MAPE, and RMSE. Random Forest has the lowest MdAPE, indicating slightly better typical percentage error.")
 
-st.divider()
-st.caption("Educational AVM prototype — Do not treat this estimate as an appraisal or as lending or investment advice.")
+st.markdown(
+    """
+    <footer class="site-footer">
+        <strong>California Home Intelligence</strong><br>
+        Educational AVM prototype built by Jasper Fan-Chiang · USC Applied Data Science · IDX Exchange internship.<br>
+        Estimates are decision-support signals, not professional appraisals or lending or investment advice.
+    </footer>
+    """,
+    unsafe_allow_html=True,
+)
